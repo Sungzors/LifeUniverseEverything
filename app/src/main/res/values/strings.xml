@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Life Universe Everything</string>
+    <string name="life_universe_everything">Life, Universe, Everything</string>
+    <string name="startbut">Start!!</string>
 </resources>
