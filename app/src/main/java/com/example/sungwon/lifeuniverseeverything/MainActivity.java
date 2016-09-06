@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     ImageView mLuedpic;
     TextView mStart;
-    Animation animation;
+    Animation mAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         mLuedpic = (ImageView)findViewById(R.id.luedpic);
         mStart = (TextView)findViewById(R.id.StartButton);
-        animation = AnimationUtils.loadAnimation(this, R.anim.mainmenuanim);
-        mLuedpic.startAnimation(animation);
+        mAnimation = AnimationUtils.loadAnimation(this, R.anim.mainmenuanim);
+        mLuedpic.startAnimation(mAnimation); //enables rotatoes in the background pic
     }
 }

@@ -3,4 +3,8 @@
     <string name="life_universe_everything">Life, Universe, Everything</string>
     <string name="startbut">Start!!</string>
     <string name="title_activity_everything_list">EverythingListActivity</string>
+    <string name="alphaba">ABC</string>
+    <string name="categorize">Category</string>
+    <string name="ratinga">Rating</string>
+    <string name="rating">Rating:</string>
 </resources>
