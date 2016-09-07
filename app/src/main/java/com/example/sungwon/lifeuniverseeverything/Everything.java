@@ -20,7 +20,7 @@ public class Everything {
         this.mName = mName;
         this.mRating = mRating;
         this.mReview = mReview;
-        this.mTag = mTag;
+        this.mTag = (mTag.isEmpty())? "default" :  mTag;
     }
 
     public void setmRating(int mRating) {
@@ -56,5 +56,9 @@ public class Everything {
     public List<String> getmTag() {
         List<String> items = Arrays.asList(mTag.split("\\s*,\\s*"));
         return items;
+    }
+
+    public String getmTag(boolean tag){
+        return (tag)? mTag: null;
     }
 }
