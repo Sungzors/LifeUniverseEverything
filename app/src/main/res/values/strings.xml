@@ -7,4 +7,6 @@
     <string name="categorize">Category</string>
     <string name="ratinga">Rating</string>
     <string name="rating"> Rating:</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search the Name</string>
 </resources>

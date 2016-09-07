@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
         mAnimation = AnimationUtils.loadAnimation(this, R.anim.mainmenuanim);
         mLuedpic.startAnimation(mAnimation); //enables rotatoes in the background pic
         mHelper = new SQLHelper(this);
-        mHelper.getWritableDatabase();
-
-        mHelper.addDataToDb();
+//        mHelper.getWritableDatabase();
+//
+//        mHelper.addDataToDb();
         mStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
