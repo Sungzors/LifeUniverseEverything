@@ -17,7 +17,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     public static final String DB_NAME = "everything_db";
 
     public SQLHelper(Context context) {
-        super(context, DB_NAME, null, 1);
+        super(context, DB_NAME, null, 2);
     }
 
     private static SQLHelper INSTANCE;
@@ -52,6 +52,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         public static final String COLUMN_TAGS_ID = "tags_id";
         public static final String COLUMN_RATINGS = "rating";
         public static final String COLUMN_CATEGORY_ID = "category_id";
+        public static final String COLUMN_REVIEW = "review";
     }
 
     /**
@@ -80,7 +81,8 @@ public class SQLHelper extends SQLiteOpenHelper{
             everythingTable.COLUMN_EVERYTHING + " TEXT," +
             everythingTable.COLUMN_TAGS_ID + " INTEGER," +
             everythingTable.COLUMN_RATINGS + " INTEGER," +
-            everythingTable.COLUMN_CATEGORY_ID + " INTEGER" + ")";
+            everythingTable.COLUMN_CATEGORY_ID + " INTEGER," +
+            everythingTable.COLUMN_REVIEW + " TEXT"+")";
 
     /**
      * SQL command to delete our everything table.
@@ -94,8 +96,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     private static final String SQL_CREATE_ENTRIES_CATEGORY = "CREATE TABLE " +
             CategoryTable.TABLE_NAME + " (" +
             CategoryTable._ID + " INTEGER PRIMARY KEY," +
-            CategoryTable.COLUMN_CATEGORY + " TEXT" +
-            "FOREIGN KEY(" + CategoryTable._ID + ") REFERENCES "+everythingTable._ID +")";
+            CategoryTable.COLUMN_CATEGORY + " TEXT" + ")";
 
     /**
      * SQL command to delete our cate table.
@@ -110,8 +111,7 @@ public class SQLHelper extends SQLiteOpenHelper{
             TagTable.TABLE_NAME + " (" +
             TagTable._ID + " INTEGER PRIMARY KEY," +
             TagTable.COLUMN_TAG + " TEXT" +
-            TagTable.COLUMN_THING_ID + " INTEGER" +
-            "FOREIGN KEY(" + TagTable._ID + ") REFERENCES "+everythingTable._ID +")";
+            TagTable.COLUMN_THING_ID + " INTEGER" + ")";
 
     /**
      * SQL command to delete our cate table.
@@ -177,13 +177,60 @@ public class SQLHelper extends SQLiteOpenHelper{
         Category cat8 = new Category("Show");
         Category cat9 = new Category("Movie");
         Category cat10 = new Category("Food");
+        Category cat11 = new Category("Beverage");
+
+        insertCategory(cat0);
+        insertCategory(cat1);
+        insertCategory(cat2);
+        insertCategory(cat3);
+        insertCategory(cat4);
+        insertCategory(cat5);
+        insertCategory(cat6);
+        insertCategory(cat7);
+        insertCategory(cat8);
+        insertCategory(cat9);
+        insertCategory(cat10);
+        insertCategory(cat11);
     }
 
     /**
+     * Should return the entire "Everythings" in the entire db... hopefully
      * @return List of tasks within one category.
      */
 
+    public LinkedList<Everything> getEverything(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        LinkedList<Everything> list = new LinkedList<>();
+        Cursor cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                new String[]{everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                null, // c. selections
+                null, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            int tagid = cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGS_ID));
+            String tags = getTag(tagid);
+            Everything thing = new Everything(cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_CATEGORY_ID)),
+                    cursor.getString(cursor.getColumnIndex(everythingTable.COLUMN_EVERYTHING)),
+                    cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_RATINGS)),
+                    cursor.getString(cursor.getColumnIndex(everythingTable.COLUMN_REVIEW)),
+                    tags
+                    );
+            list.add(thing);
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
 
+    /**
+     * Gets the ID of an everything
+     * @param thing
+     * @return
+     */
     public int getEverythingID(String thing){
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -197,9 +244,10 @@ public class SQLHelper extends SQLiteOpenHelper{
                 null, // g. order by
                 null); // h. limit
         cursor.moveToFirst();
+        int i = cursor.getInt(cursor.getColumnIndex(everythingTable._ID));
         cursor.close();
         db.close();
-        return cursor.getInt(0);
+        return i;
     }
 
     public int getLastID(){
@@ -214,14 +262,14 @@ public class SQLHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * TODO: Get category
+     *
      * @return get Category depending on le id.
      */
     public String getCategory(int id) {
         SQLiteDatabase db = getReadableDatabase();
         String ids = String.valueOf(id);
 
-        String query = "SELECT "+ CategoryTable.COLUMN_CATEGORY + " FROM "+ CategoryTable.TABLE_NAME + " WHERE " + CategoryTable._ID + " like ?";
+        String query = "SELECT "+ CategoryTable.COLUMN_CATEGORY + " FROM "+ CategoryTable.TABLE_NAME + " WHERE " + CategoryTable._ID + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{ids});
         cursor.moveToFirst();
         String s = cursor.getString(0);
@@ -231,13 +279,13 @@ public class SQLHelper extends SQLiteOpenHelper{
     }
 
     /**
-     * TODO: Get category id
+     *
      * @return List of employee names.
      */
     public int getCategoryid(String cat) {
         SQLiteDatabase db = getReadableDatabase();
         LinkedList<String> goodlist = new LinkedList<>();
-        String query = "SELECT "+ CategoryTable._ID + " FROM "+ CategoryTable.TABLE_NAME + " WHERE " + CategoryTable._ID + " like ?";
+        String query = "SELECT "+ CategoryTable._ID + " FROM "+ CategoryTable.TABLE_NAME + " WHERE " + CategoryTable.COLUMN_CATEGORY + " like ?";
         Cursor cursor = db.rawQuery(query, new String[]{cat});
         cursor.moveToFirst();
         int i = cursor.getInt(0);
@@ -246,5 +294,56 @@ public class SQLHelper extends SQLiteOpenHelper{
         return i;
     }
 
+    /**
+     * Gets Tag based on id
+     * @return get Category depending on le id.
+     */
+    public String getTag(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        String ids = String.valueOf(id);
 
+        String query = "SELECT "+ TagTable.COLUMN_TAG + " FROM "+ TagTable.TABLE_NAME + " WHERE " + TagTable._ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{ids});
+        cursor.moveToFirst();
+        String s = cursor.getString(0);
+        cursor.close();
+        db.close();
+        return s;
+    }
+
+    /**
+     * Gets Tag ID based on tag name
+     * @return List of employee names.
+     */
+    public int getTagid(String cat) {
+        SQLiteDatabase db = getReadableDatabase();
+        LinkedList<String> goodlist = new LinkedList<>();
+        String query = "SELECT "+ TagTable._ID + " FROM "+ TagTable.TABLE_NAME + " WHERE " + TagTable.COLUMN_TAG + " like ?";
+        Cursor cursor = db.rawQuery(query, new String[]{cat});
+        cursor.moveToFirst();
+        int i = cursor.getInt(0);
+        cursor.close();
+        db.close();
+        return i;
+    }
+
+    /**
+     * Deletes an Everything as well as a tag associated with it
+     * @param id
+     */
+    public void deleteOneEverything(int id){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String selection = everythingTable._ID + " = ?";
+
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+
+        db.delete(everythingTable.TABLE_NAME, selection, selectionArgs);
+
+        String selection2 = TagTable.COLUMN_THING_ID + " = ?";
+
+        String[] selectionArgs2 = new String[]{String.valueOf(id)};
+
+        db.delete(TagTable.TABLE_NAME, selection, selectionArgs);
+    }
 }

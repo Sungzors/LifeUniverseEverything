@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView mLuedpic;
     TextView mStart;
     Animation mAnimation;
+    SQLHelper mHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,5 +22,9 @@ public class MainActivity extends AppCompatActivity {
         mStart = (TextView)findViewById(R.id.StartButton);
         mAnimation = AnimationUtils.loadAnimation(this, R.anim.mainmenuanim);
         mLuedpic.startAnimation(mAnimation); //enables rotatoes in the background pic
+//        mHelper = new SQLHelper(this);
+//
+//        mHelper.addDataToDb();
+
     }
 }

@@ -2,14 +2,16 @@ package com.example.sungwon.lifeuniverseeverything;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
  */
+
+
 public class ExampleUnitTest {
+
+
     @Test
     public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+//        assertEquals(12, SQLHelper.CategoryTable._ID );
     }
 }
