@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by SungWon on 9/6/2016.
@@ -17,7 +16,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     public static final String DB_NAME = "everything_db";
 
     public SQLHelper(Context context) {
-        super(context, DB_NAME, null, 2);
+        super(context, DB_NAME, null, 5);
     }
 
     private static SQLHelper INSTANCE;
@@ -110,7 +109,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     private static final String SQL_CREATE_ENTRIES_TAG = "CREATE TABLE " +
             TagTable.TABLE_NAME + " (" +
             TagTable._ID + " INTEGER PRIMARY KEY," +
-            TagTable.COLUMN_TAG + " TEXT" +
+            TagTable.COLUMN_TAG + " TEXT," +
             TagTable.COLUMN_THING_ID + " INTEGER" + ")";
 
     /**
@@ -125,15 +124,17 @@ public class SQLHelper extends SQLiteOpenHelper{
      */
 
 
-    public void insertEverything(Everything thing) {
+    public int insertEverything(Everything thing) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(everythingTable.COLUMN_EVERYTHING, thing.getmName());
-        values.put(everythingTable.COLUMN_TAGS_ID, everythingTable._ID);
+        values.put(everythingTable.COLUMN_TAGS_ID, getLastID());
         values.put(everythingTable.COLUMN_RATINGS, thing.getmRating());
         values.put(everythingTable.COLUMN_CATEGORY_ID, thing.getmCat_id());
+        values.put(everythingTable.COLUMN_REVIEW, thing.getmReview());
         db.insertOrThrow(everythingTable.TABLE_NAME, null, values);
+        return getLastID();
     }
 
     /**
@@ -147,25 +148,26 @@ public class SQLHelper extends SQLiteOpenHelper{
         db.insertOrThrow(CategoryTable.TABLE_NAME, null, values);
     }
     /**
-     * Insert a tag into the database.
+     * Insert a tag into the database.  Must directly follow inserteverything
      * @param
      */
     public void insertTag(Everything thing, int id) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        List<String> taglist = thing.getmTag();
-        for (int i = 0; i < taglist.size(); i++) {
-            values.put(TagTable.COLUMN_TAG, taglist.get(i));
-            values.put(TagTable.COLUMN_THING_ID, id );
-        }
+        String taglist = thing.getmTag(true);
 
-        db.insertOrThrow(CategoryTable.TABLE_NAME, null, values);
+        values.put(TagTable.COLUMN_TAG, taglist);
+        values.put(TagTable.COLUMN_THING_ID, id );
+
+
+        db.insertOrThrow(TagTable.TABLE_NAME, null, values);
     }
 
     /**
      * Add some default data to the database.
      */
     public void addDataToDb() {
+// first cat initialize, hopefully cat id matches variable number (it's actually +1...)
         Category cat0 = new Category("Animal");
         Category cat1 = new Category("Book");
         Category cat2 = new Category("Fruit");
@@ -191,39 +193,52 @@ public class SQLHelper extends SQLiteOpenHelper{
         insertCategory(cat9);
         insertCategory(cat10);
         insertCategory(cat11);
+
+        //2nd db dummy initialize Everything format cat id, name, rating, review, tags
+        Everything thing0 = new Everything(1, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good" , "great, pet, nice, fluffy");
+        Everything thing1 = new Everything(8, "Sanic", 2, "Just not a good Sanic" , "poor, horrible, murder, crime");
+        Everything thing2 = new Everything(9, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much" , "sweet, I, love, Picard, all, of, the, homo");
+        int i = 0;
+        i = insertEverything(thing0);
+        insertTag(thing0, i);
+        i = insertEverything(thing1);
+        insertTag(thing1, i);
+        i = insertEverything(thing2);
+        insertTag(thing2, i);
+
     }
 
     /**
      * Should return the entire "Everythings" in the entire db... hopefully
-     * @return List of tasks within one category.
+     * @return cursor
      */
 
-    public LinkedList<Everything> getEverything(){
+    public Cursor getEverything(){
         SQLiteDatabase db = this.getReadableDatabase();
-        LinkedList<Everything> list = new LinkedList<>();
+//        LinkedList<Everything> list = new LinkedList<>();
         Cursor cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                new String[]{everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
                 null, // c. selections
                 null, // d. selections args
                 null, // e. group by
                 null, // f. having
                 null, // g. order by
                 null); // h. limit
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
-            int tagid = cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGS_ID));
-            String tags = getTag(tagid);
-            Everything thing = new Everything(cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_CATEGORY_ID)),
-                    cursor.getString(cursor.getColumnIndex(everythingTable.COLUMN_EVERYTHING)),
-                    cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_RATINGS)),
-                    cursor.getString(cursor.getColumnIndex(everythingTable.COLUMN_REVIEW)),
-                    tags
-                    );
-            list.add(thing);
-        }
-        cursor.close();
-        db.close();
-        return list;
+//        cursor.moveToFirst();
+//        while(!cursor.isAfterLast()){
+//            int tagid = cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGS_ID));
+//            String tags = getTag(tagid);
+//            Everything thing = new Everything(cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_CATEGORY_ID)),
+//                    cursor.getString(cursor.getColumnIndex(everythingTable.COLUMN_EVERYTHING)),
+//                    cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_RATINGS)),
+//                    cursor.getString(cursor.getColumnIndex(everythingTable.COLUMN_REVIEW)),
+//                    tags
+//                    );
+//            list.add(thing);
+//        }
+//        cursor.close();
+//        db.close();
+        return cursor;
     }
 
     /**
@@ -256,8 +271,6 @@ public class SQLHelper extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         int i = cursor.getInt(0);
-        cursor.close();
-        db.close();
         return i;
     }
 
@@ -269,10 +282,11 @@ public class SQLHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = getReadableDatabase();
         String ids = String.valueOf(id);
 
-        String query = "SELECT "+ CategoryTable.COLUMN_CATEGORY + " FROM "+ CategoryTable.TABLE_NAME + " WHERE " + CategoryTable._ID + " = ?";
+        String query = "SELECT * FROM "+ CategoryTable.TABLE_NAME + " WHERE " + CategoryTable._ID + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{ids});
+//        Cursor cursor = db.rawQuery("SELECT * FROM category_table", null);
         cursor.moveToFirst();
-        String s = cursor.getString(0);
+        String s = cursor.getString(cursor.getColumnIndex(CategoryTable.COLUMN_CATEGORY));
         cursor.close();
         db.close();
         return s;
@@ -288,7 +302,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         String query = "SELECT "+ CategoryTable._ID + " FROM "+ CategoryTable.TABLE_NAME + " WHERE " + CategoryTable.COLUMN_CATEGORY + " like ?";
         Cursor cursor = db.rawQuery(query, new String[]{cat});
         cursor.moveToFirst();
-        int i = cursor.getInt(0);
+        int i = cursor.getInt(cursor.getColumnIndex(CategoryTable._ID));
         cursor.close();
         db.close();
         return i;
@@ -305,7 +319,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         String query = "SELECT "+ TagTable.COLUMN_TAG + " FROM "+ TagTable.TABLE_NAME + " WHERE " + TagTable._ID + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{ids});
         cursor.moveToFirst();
-        String s = cursor.getString(0);
+        String s = cursor.getString(cursor.getColumnIndex(TagTable.COLUMN_TAG));
         cursor.close();
         db.close();
         return s;
@@ -321,7 +335,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         String query = "SELECT "+ TagTable._ID + " FROM "+ TagTable.TABLE_NAME + " WHERE " + TagTable.COLUMN_TAG + " like ?";
         Cursor cursor = db.rawQuery(query, new String[]{cat});
         cursor.moveToFirst();
-        int i = cursor.getInt(0);
+        int i = cursor.getInt(cursor.getColumnIndex(TagTable._ID));
         cursor.close();
         db.close();
         return i;
