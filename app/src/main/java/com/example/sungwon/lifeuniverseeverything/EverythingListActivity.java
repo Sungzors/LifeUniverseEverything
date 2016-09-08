@@ -1,5 +1,8 @@
 package com.example.sungwon.lifeuniverseeverything;
 
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EverythingListActivity extends AppCompatActivity implements SearchSettingFragment.SearchSettingListener{
 
@@ -32,11 +37,14 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
     TextView mRatingNum;
     SQLHelper helper;
     CursorAdapter mCursorAdapter;
-    String mSetting;
+    String mSetting = "everything";
+    ImageButton mSettingButt;
+    int mStackLevel = 0;
 
     @Override
     public void onSearchButtonSubmit(String setting) {
         mSetting = setting;
+        Toast.makeText(EverythingListActivity.this, "Search setting changed!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -49,6 +57,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         mAlpha = (Button) findViewById(R.id.alphabetizor);
         mCata = (Button) findViewById(R.id.categorizor);
         mRata = (Button) findViewById(R.id.ratingzor);
+        mSettingButt = (ImageButton) findViewById(R.id.settingButt);
 
         mEverythingPic = (ImageView) findViewById(R.id.everythingPic);
         mRatingNum = (TextView) findViewById(R.id.ratingNumber);
@@ -76,6 +85,13 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         };
 
         mEverythingView.setAdapter(mCursorAdapter);
+
+        mSettingButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -110,12 +126,28 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getSpecificThing(query, null);
+            Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getSpecificThing(query, mSetting);
             cursor.moveToFirst();
 
             mCursorAdapter.changeCursor(cursor);
         }
     }
+    public void showDialog() {
+        mStackLevel++;
 
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = SearchSettingFragment.newInstance(mStackLevel);
+        newFragment.show(ft, "dialog");
+    }
 
 }

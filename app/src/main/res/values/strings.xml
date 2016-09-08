@@ -13,4 +13,5 @@
     <string name="tags">Tags</string>
     <string name="categorysearch">Category</string>
     <string name="everythingsearch">Everything</string>
+    <string name="set_the_search_setting">Set the Search Setting</string>
 </resources>
