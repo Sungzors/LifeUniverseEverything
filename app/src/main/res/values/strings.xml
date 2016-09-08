@@ -9,4 +9,8 @@
     <string name="rating"> Rating:</string>
     <string name="search">Search</string>
     <string name="search_hint">Search the Name</string>
+    <string name="search_settings">Search Settings:</string>
+    <string name="tags">Tags</string>
+    <string name="categorysearch">Category</string>
+    <string name="everythingsearch">Everything</string>
 </resources>

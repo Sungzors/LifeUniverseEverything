@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="340dp"
+    android:layout_height="175dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_settings"
+        android:textSize="20sp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp">
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="@string/everythingsearch"
+            android:textSize="12sp"
+            android:id="@+id/everythingSearch"/>
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="@string/tags"
+            android:textSize="12sp"
+            android:id="@+id/tagSearch"/>
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:text="@string/categorysearch"
+            android:textSize="12sp"
+            android:id="@+id/catSearch"/>
+    </LinearLayout>
+</LinearLayout>

@@ -360,4 +360,17 @@ public class SQLHelper extends SQLiteOpenHelper{
 
         db.delete(TagTable.TABLE_NAME, selection, selectionArgs);
     }
+
+    public Cursor getSpecificThing(String query, String choice){ //needs search entry as well as choice of which query to search
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                everythingTable.COLUMN_EVERYTHING + " LIKE ?", // c. selections
+                new String[]{'%' + query + '%'}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        return cursor;
+    }
 }

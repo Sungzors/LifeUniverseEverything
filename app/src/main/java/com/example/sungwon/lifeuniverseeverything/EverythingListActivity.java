@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class EverythingListActivity extends AppCompatActivity {
+public class EverythingListActivity extends AppCompatActivity implements SearchSettingFragment.SearchSettingListener{
 
     ListView mEverythingView;
     Button mAlpha;
@@ -31,6 +31,13 @@ public class EverythingListActivity extends AppCompatActivity {
     TextView mCategoryText;
     TextView mRatingNum;
     SQLHelper helper;
+    CursorAdapter mCursorAdapter;
+    String mSetting;
+
+    @Override
+    public void onSearchButtonSubmit(String setting) {
+        mSetting = setting;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +59,7 @@ public class EverythingListActivity extends AppCompatActivity {
         Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getEverything();
         cursor.moveToFirst();
 
-        CursorAdapter cursorAdapter = new CursorAdapter(EverythingListActivity.this, cursor, 0) {
+        mCursorAdapter = new CursorAdapter(EverythingListActivity.this, cursor, 0) {
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
                 return LayoutInflater.from(context).inflate(R.layout.list_view, viewGroup ,false);
@@ -64,11 +71,11 @@ public class EverythingListActivity extends AppCompatActivity {
                 mEverythingName.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_EVERYTHING)));
                 String cate = helper.getCategory(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_CATEGORY_ID)));
                 mCategoryText = (TextView) view.findViewById(R.id.categoryText);
-                mCategoryText.setText(cate);
+                mCategoryText.setText(cate + " ");
             }
         };
 
-        mEverythingView.setAdapter(cursorAdapter);
+        mEverythingView.setAdapter(mCursorAdapter);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -103,6 +110,12 @@ public class EverythingListActivity extends AppCompatActivity {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
+            Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getSpecificThing(query, null);
+            cursor.moveToFirst();
+
+            mCursorAdapter.changeCursor(cursor);
         }
     }
+
+
 }
