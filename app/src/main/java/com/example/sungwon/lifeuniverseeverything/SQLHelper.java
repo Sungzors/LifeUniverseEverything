@@ -3,11 +3,15 @@ package com.example.sungwon.lifeuniverseeverything;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by SungWon on 9/6/2016.
@@ -320,8 +324,6 @@ public class SQLHelper extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery(query, new String[]{ids});
         cursor.moveToFirst();
         String s = cursor.getString(cursor.getColumnIndex(TagTable.COLUMN_TAG));
-        cursor.close();
-        db.close();
         return s;
     }
 
@@ -363,14 +365,84 @@ public class SQLHelper extends SQLiteOpenHelper{
 
     public Cursor getSpecificThing(String query, String choice){ //needs search entry as well as choice of which query to search
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
-                everythingTable.COLUMN_EVERYTHING + " LIKE ?", // c. selections
-                new String[]{'%' + query + '%'}, // d. selections args
-                null, // e. group by
-                null, // f. having
-                null, // g. order by
-                null); // h. limit
+        Cursor cursor = null;
+        switch (choice) {
+            case "everything":
+
+                cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                        everythingTable.COLUMN_EVERYTHING + " LIKE ?", // c. selections
+                        new String[]{'%' + query + '%'}, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+
+                break;
+
+            case "tag":
+                ArrayList<Integer> idlist = new ArrayList<>();
+                cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                        new String[]{everythingTable.COLUMN_TAGS_ID}, // b. column names
+                        null, // c. selections
+                        null, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+
+                DatabaseUtils.dumpCursor(cursor);
+                while(cursor.moveToNext()){
+
+                    idlist.add(cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGS_ID)));
+
+                }
+                if(idlist.size()==0) {cursor.close(); break;}
+                String[] idargs = new String[idlist.size()];
+                for (int i = 0; i < idlist.size(); i++) {
+                    String tag = getTag(idlist.get(i));
+                    List<String> items = Arrays.asList(tag.split("\\s*,\\s*"));
+                    idargs[i] = (items.contains(query)) ? String.valueOf(idlist.get(i)):"z";
+                }
+                cursor.close();
+                cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                        everythingTable.COLUMN_TAGS_ID + " = ?", // c. selections
+                        idargs, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+                break;
+            case "cat":
+                cursor = db.query(CategoryTable.TABLE_NAME, // a. table
+                        new String[]{CategoryTable._ID}, // b. column names
+                        CategoryTable.COLUMN_CATEGORY + " = ?", // c. selections
+                        new String[]{query}, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+                ArrayList<Integer> cidlist = new ArrayList<>();
+                while(cursor.moveToNext()){
+                    cidlist.add(cursor.getInt(cursor.getColumnIndex(CategoryTable._ID)));
+                }
+                if(cidlist.size()==0) {cursor.close(); break;}
+                String[] cidargs = new String[cidlist.size()];
+                for (int i = 0; i < cidlist.size(); i++) {
+                    cidargs[i]=String.valueOf(cidlist.get(i));
+                }
+                cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                        everythingTable.COLUMN_CATEGORY_ID + " = ?", // c. selections
+                        cidargs, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
+                break;
+        }
+
         return cursor;
     }
 }

@@ -36,4 +36,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStop() {
+        mLuedpic.clearAnimation();
+        super.onStop();
+    }
 }
