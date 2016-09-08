@@ -60,7 +60,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         mSettingButt = (ImageButton) findViewById(R.id.settingButt);
 
         mEverythingPic = (ImageView) findViewById(R.id.everythingPic);
-        mRatingNum = (TextView) findViewById(R.id.ratingNumber);
+
         handleIntent(getIntent());
         helper = new SQLHelper(EverythingListActivity.this);
         helper.getReadableDatabase();
@@ -81,6 +81,8 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
                 String cate = helper.getCategory(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_CATEGORY_ID)));
                 mCategoryText = (TextView) view.findViewById(R.id.categoryText);
                 mCategoryText.setText(cate + " ");
+                mRatingNum = (TextView) view.findViewById(R.id.ratingNumber);
+                mRatingNum.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_RATINGS))) + " / 10");
             }
         };
 
@@ -98,7 +100,8 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(EverythingListActivity.this, AddThingActivity.class);
+                startActivity(intent);
             }
         });
     }

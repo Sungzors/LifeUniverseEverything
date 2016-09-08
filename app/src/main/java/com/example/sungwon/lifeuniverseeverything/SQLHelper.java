@@ -269,6 +269,27 @@ public class SQLHelper extends SQLiteOpenHelper{
         return i;
     }
 
+    /**
+     * method to get all the categories in an arraylist to use in drop down menuuuuu
+     * @return
+     */
+    public ArrayList<String> getAllCats(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<String> bongo = new ArrayList<>();
+        Cursor cursor = db.query(CategoryTable.TABLE_NAME, // a. table
+                new String[]{CategoryTable.COLUMN_CATEGORY}, // b. column names
+                null, // c. selections
+                null, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        while(cursor.moveToNext()){
+            bongo.add(cursor.getString(cursor.getColumnIndex(CategoryTable.COLUMN_CATEGORY)));
+        }
+        return bongo;
+    }
+
     public int getLastID(){
         String query = "SELECT last_insert_rowid()";
         SQLiteDatabase db = getReadableDatabase();

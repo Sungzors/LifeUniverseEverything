@@ -22,14 +22,16 @@
             android:name=".EverythingListActivity"
             android:label="@string/title_activity_everything_list"
             android:launchMode="singleTop"
-
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
+
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".AddThingActivity"></activity>
     </application>
 
 </manifest>

@@ -6,7 +6,7 @@
     <string name="alphaba">ABC</string>
     <string name="categorize">Category</string>
     <string name="ratinga">Rating</string>
-    <string name="rating"> Rating:</string>
+    <string name="rating"> Rating: </string>
     <string name="search">Search</string>
     <string name="search_hint">Search the Name</string>
     <string name="search_settings">Search Settings:</string>
@@ -14,4 +14,6 @@
     <string name="categorysearch">Category</string>
     <string name="everythingsearch">Everything</string>
     <string name="set_the_search_setting">Set the Search Setting</string>
+    <string name="insert_name_here">Insert Name Here!!</string>
+    <string name="press_to_insert_image">Press to insert image!</string>
 </resources>
