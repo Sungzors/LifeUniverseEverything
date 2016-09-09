@@ -172,43 +172,65 @@ public class SQLHelper extends SQLiteOpenHelper{
      */
     public void addDataToDb() {
 // first cat initialize, hopefully cat id matches variable number (it's actually +1...)
-        Category cat0 = new Category("Animal");
-        Category cat1 = new Category("Book");
-        Category cat2 = new Category("Fruit");
-        Category cat3 = new Category("Vegetable");
-        Category cat4 = new Category("Person");
-        Category cat5 = new Category("State of Being");
-        Category cat6 = new Category("18+");
-        Category cat7 = new Category("Game");
-        Category cat8 = new Category("Show");
-        Category cat9 = new Category("Movie");
-        Category cat10 = new Category("Food");
-        Category cat11 = new Category("Beverage");
+//        Category cat0 = new Category("Animal");
+//        Category cat1 = new Category("Book");
+//        Category cat2 = new Category("Fruit");
+//        Category cat3 = new Category("Vegetable");
+//        Category cat4 = new Category("Person");
+//        Category cat5 = new Category("State of Being");
+//        Category cat6 = new Category("18+");
+//        Category cat7 = new Category("Game");
+//        Category cat8 = new Category("Show");
+//        Category cat9 = new Category("Movie");
+//        Category cat10 = new Category("Food");
+//        Category cat11 = new Category("Beverage");
+        Category cat12 = new Category("Music");
+        Category cat13 = new Category("Action");
+        Category cat14 = new Category("Emotion");
+        Category cat15 = new Category("Belief");
+        Category cat16 = new Category("Fiction");
+        Category cat17 = new Category("Tool");
+        Category cat18 = new Category("Event");
+        Category cat19 = new Category("Time");
+        Category cat20 = new Category("Place");
+        Category cat21 = new Category("Other");
 
-        insertCategory(cat0);
-        insertCategory(cat1);
-        insertCategory(cat2);
-        insertCategory(cat3);
-        insertCategory(cat4);
-        insertCategory(cat5);
-        insertCategory(cat6);
-        insertCategory(cat7);
-        insertCategory(cat8);
-        insertCategory(cat9);
-        insertCategory(cat10);
-        insertCategory(cat11);
+
+//        insertCategory(cat0);
+//        insertCategory(cat1);
+//        insertCategory(cat2);
+//        insertCategory(cat3);
+//        insertCategory(cat4);
+//        insertCategory(cat5);
+//        insertCategory(cat6);
+//        insertCategory(cat7);
+//        insertCategory(cat8);
+//        insertCategory(cat9);
+//        insertCategory(cat10);
+//        insertCategory(cat11);
+        insertCategory(cat12);
+        insertCategory(cat13);
+        insertCategory(cat14);
+        insertCategory(cat15);
+        insertCategory(cat16);
+        insertCategory(cat17);
+        insertCategory(cat18);
+        insertCategory(cat19);
+        insertCategory(cat20);
+        insertCategory(cat21);
+
 
         //2nd db dummy initialize Everything format cat id, name, rating, review, tags
-        Everything thing0 = new Everything(1, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good" , "great, pet, nice, fluffy");
-        Everything thing1 = new Everything(8, "Sanic", 2, "Just not a good Sanic" , "poor, horrible, murder, crime");
-        Everything thing2 = new Everything(9, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much" , "sweet, I, love, Picard, all, of, the, homo");
-        int i = 0;
-        i = insertEverything(thing0);
-        insertTag(thing0, i);
-        i = insertEverything(thing1);
-        insertTag(thing1, i);
-        i = insertEverything(thing2);
-        insertTag(thing2, i);
+//        Everything thing0 = new Everything(1, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good" , "great, pet, nice, fluffy");
+//        Everything thing1 = new Everything(8, "Sanic", 2, "Just not a good Sanic" , "poor, horrible, murder, crime");
+//        Everything thing2 = new Everything(9, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much" , "sweet, I, love, Picard, all, of, the, homo");
+//        int i = 0;
+//        i = insertEverything(thing0);
+//        insertTag(thing0, i);
+//        i = insertEverything(thing1);
+//        insertTag(thing1, i);
+//        i = insertEverything(thing2);
+//        insertTag(thing2, i);
 
     }
 
