@@ -1,11 +1,10 @@
 package com.example.sungwon.lifeuniverseeverything;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         mLuedpic = (ImageView)findViewById(R.id.luedpic);
         mStart = (TextView)findViewById(R.id.StartButton);
-        mAnimation = AnimationUtils.loadAnimation(this, R.anim.mainmenuanim);
-        mLuedpic.startAnimation(mAnimation); //enables rotatoes in the background pic
+//        mAnimation = AnimationUtils.loadAnimation(this, R.anim.mainmenuanim);
+//        mLuedpic.startAnimation(mAnimation); //enables rotatoes in the background pic
         mHelper = new SQLHelper(this);
 //        mHelper.getWritableDatabase();
 //
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        mLuedpic.clearAnimation();
+//        mLuedpic.clearAnimation();
         super.onStop();
     }
 }

@@ -104,7 +104,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
 
                 ReviewFragment revfrag = new ReviewFragment();
                 revfrag.setArguments(bundle);
-                showReviewDialog();
+                showReviewDialog(l);
             }
         });
 
@@ -166,22 +166,22 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         newFragment.show(ft, "dialog");
     }
 
-    public void showReviewDialog() {
-        mStackLevel++;
+    public void showReviewDialog(long l) {
+
 
         // DialogFragment.show() will take care of adding the fragment
         // in a transaction.  We also want to remove any currently showing
         // dialog, so make our own transaction and take care of that here.
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        Fragment prev = getFragmentManager().findFragmentByTag("review");
         if (prev != null) {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        DialogFragment newFragment = ReviewFragment.newInstance(mStackLevel);
-        newFragment.show(ft, "dialog");
+        DialogFragment newFragment = ReviewFragment.newInstance(l);
+        newFragment.show(ft, "review");
     }
 
 }

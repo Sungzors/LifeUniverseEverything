@@ -12,19 +12,17 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import static java.lang.Math.toIntExact;
-
 /**
  * Created by SungWon on 9/9/2016.
  */
 public class ReviewFragment extends DialogFragment {
 
-    static SearchSettingFragment newInstance(int num) {
-        SearchSettingFragment f = new SearchSettingFragment();
+    static ReviewFragment newInstance(long num) {
+        ReviewFragment f = new ReviewFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();
-        args.putInt("num", num);
+        args.putLong("num", num);
         f.setArguments(args);
 
         return f;
@@ -42,7 +40,8 @@ public class ReviewFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_review, container, false);
-        long rid = getArguments().getLong("rid");
+        Bundle bundle = this.getArguments();
+        long rid = bundle.getLong("num");
         mRevName = (TextView)v.findViewById(R.id.revName);
         mRevCat = (TextView)v.findViewById(R.id.revCat);
         mRevTag = (TextView)v.findViewById(R.id.revTag);
@@ -51,8 +50,9 @@ public class ReviewFragment extends DialogFragment {
         mHelper = new SQLHelper(getActivity());
         mBack = (Button)v.findViewById(R.id.backButton);
 
-        int ridi = toIntExact(rid);
+        int ridi = (int) rid;
         Cursor cursor = mHelper.getEverythingByID(ridi);
+        cursor.moveToFirst();
 
         mRevName.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_EVERYTHING)));
         mRevCat.setText(mHelper.getCategory(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_CATEGORY_ID))));

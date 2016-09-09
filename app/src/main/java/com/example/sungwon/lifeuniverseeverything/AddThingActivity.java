@@ -59,8 +59,8 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
                 int cid = mHelper.getCategoryid(catselect);
 
                 Everything thing = new Everything(cid, name, mRating, rev, tags );
-                int i = mHelper.insertEverything(thing);
-                mHelper.insertTag(thing, i);
+                int bb = mHelper.insertEverything(thing);
+                mHelper.insertTag(thing, bb);
 
                 Intent intent = new Intent(AddThingActivity.this, EverythingListActivity.class);
                 startActivity(intent);
