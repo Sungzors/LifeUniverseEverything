@@ -208,16 +208,16 @@ public class SQLHelper extends SQLiteOpenHelper{
 //        insertCategory(cat9);
 //        insertCategory(cat10);
 //        insertCategory(cat11);
-        insertCategory(cat12);
-        insertCategory(cat13);
-        insertCategory(cat14);
-        insertCategory(cat15);
-        insertCategory(cat16);
-        insertCategory(cat17);
-        insertCategory(cat18);
-        insertCategory(cat19);
-        insertCategory(cat20);
-        insertCategory(cat21);
+//        insertCategory(cat12);
+//        insertCategory(cat13);
+//        insertCategory(cat14);
+//        insertCategory(cat15);
+//        insertCategory(cat16);
+//        insertCategory(cat17);
+//        insertCategory(cat18);
+//        insertCategory(cat19);
+//        insertCategory(cat20);
+//        insertCategory(cat21);
 
 
         //2nd db dummy initialize Everything format cat id, name, rating, review, tags
@@ -266,7 +266,20 @@ public class SQLHelper extends SQLiteOpenHelper{
 //        db.close();
         return cursor;
     }
-
+    public Cursor getEverythingByID(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sid = String.valueOf(id);
+//        LinkedList<Everything> list = new LinkedList<>();
+        Cursor cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                new String[]{everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                everythingTable._ID + " = ?", // c. selections
+                new String[]{sid}, // d. selections args
+                null, // e. group by
+                null, // f. having
+                null, // g. order by
+                null); // h. limit
+        return cursor;
+    }
     /**
      * Gets the ID of an everything
      * @param thing

@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
@@ -95,6 +96,18 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
             }
         });
 
+        mEverythingView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Bundle bundle = new Bundle();
+                bundle.putLong("rid", l);
+
+                ReviewFragment revfrag = new ReviewFragment();
+                revfrag.setArguments(bundle);
+                showReviewDialog();
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +163,24 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
 
         // Create and show the dialog.
         DialogFragment newFragment = SearchSettingFragment.newInstance(mStackLevel);
+        newFragment.show(ft, "dialog");
+    }
+
+    public void showReviewDialog() {
+        mStackLevel++;
+
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = ReviewFragment.newInstance(mStackLevel);
         newFragment.show(ft, "dialog");
     }
 
