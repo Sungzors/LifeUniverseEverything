@@ -66,7 +66,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         helper = new SQLHelper(EverythingListActivity.this);
         helper.getReadableDatabase();
 
-        Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getEverything();
+        final Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getEverything();
         cursor.moveToFirst();
 
         mCursorAdapter = new CursorAdapter(EverythingListActivity.this, cursor, 0) {
@@ -108,6 +108,17 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
             }
         });
 
+        mEverythingView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                helper.deleteOneEverything((int)l);
+                Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getEverything();
+                cursor.moveToFirst();
+                mCursorAdapter.changeCursor(cursor);
+                return true;
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +126,28 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
             public void onClick(View view) {
                 Intent intent = new Intent(EverythingListActivity.this, AddThingActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        mAlpha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_EVERYTHING);
+                mCursorAdapter.changeCursor(cursor);
+            }
+        });
+        mCata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_CATEGORY_ID);
+                mCursorAdapter.changeCursor(cursor);
+            }
+        });
+        mRata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_RATINGS);
+                mCursorAdapter.changeCursor(cursor);
             }
         });
     }

@@ -20,7 +20,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     public static final String DB_NAME = "everything_db";
 
     public SQLHelper(Context context) {
-        super(context, DB_NAME, null, 6);
+        super(context, DB_NAME, null, 8);
     }
 
     private static SQLHelper INSTANCE;
@@ -129,7 +129,7 @@ public class SQLHelper extends SQLiteOpenHelper{
      */
 
 
-    public int insertEverything(Everything thing) {
+    public int insertthing(Everything thing) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -142,6 +142,19 @@ public class SQLHelper extends SQLiteOpenHelper{
         db.insertOrThrow(everythingTable.TABLE_NAME, null, values);
         int af = getLastID();
         return getLastID();
+    }
+
+    public int insertEverything(Everything thing) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        int x = getLastIDET();
+        values.put(everythingTable.COLUMN_EVERYTHING, thing.getmName());
+        values.put(everythingTable.COLUMN_TAGS_ID, x+1);
+        values.put(everythingTable.COLUMN_RATINGS, thing.getmRating());
+        values.put(everythingTable.COLUMN_CATEGORY_ID, thing.getmCat_id());
+        values.put(everythingTable.COLUMN_REVIEW, thing.getmReview());
+        db.insertOrThrow(everythingTable.TABLE_NAME, null, values);
+        return x;
     }
 
     /**
@@ -164,7 +177,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         String taglist = thing.getmTag(true);
 
         values.put(TagTable.COLUMN_TAG, taglist);
-        values.put(TagTable.COLUMN_THING_ID, id);
+        values.put(TagTable.COLUMN_THING_ID, id + 1);
 
 
         db.insertOrThrow(TagTable.TABLE_NAME, null, values);
@@ -187,27 +200,27 @@ public class SQLHelper extends SQLiteOpenHelper{
      */
     public void addDataToDb() {
 // first cat initialize, hopefully cat id matches variable number (it's actually +1...)
-        Category cat0 = new Category("Animal");
-        Category cat1 = new Category("Book");
-        Category cat2 = new Category("Fruit");
-        Category cat3 = new Category("Vegetable");
-        Category cat4 = new Category("Person");
-        Category cat5 = new Category("State of Being");
-        Category cat6 = new Category("18+");
-        Category cat7 = new Category("Game");
-        Category cat8 = new Category("Show");
-        Category cat9 = new Category("Movie");
-        Category cat10 = new Category("Food");
-        Category cat11 = new Category("Beverage");
+        Category cat0 = new Category("Action");
+        Category cat1 = new Category("Animal");
+        Category cat2 = new Category("Belief");
+        Category cat3 = new Category("Beverage");
+        Category cat4 = new Category("Book");
+        Category cat5 = new Category("Emotion");
+        Category cat6 = new Category("Event");
+        Category cat7 = new Category("Fiction");
+        Category cat8 = new Category("Food");
+        Category cat9 = new Category("Fruit");
+        Category cat10 = new Category("Game");
+        Category cat11 = new Category("Movie");
         Category cat12 = new Category("Music");
-        Category cat13 = new Category("Action");
-        Category cat14 = new Category("Emotion");
-        Category cat15 = new Category("Belief");
-        Category cat16 = new Category("Fiction");
-        Category cat17 = new Category("Tool");
-        Category cat18 = new Category("Event");
-        Category cat19 = new Category("Time");
-        Category cat20 = new Category("Place");
+        Category cat13 = new Category("Person");
+        Category cat14 = new Category("Place");
+        Category cat15 = new Category("Show");
+        Category cat16 = new Category("State of Being");
+        Category cat17 = new Category("Time");
+        Category cat18 = new Category("Tool");
+        Category cat19 = new Category("Vegetable");
+        Category cat20 = new Category("18+");
         Category cat21 = new Category("Other");
 
 
@@ -236,16 +249,16 @@ public class SQLHelper extends SQLiteOpenHelper{
 
 
 //        2nd db dummy initialize Everything format cat id, name, rating, review, tags
-//        Everything thing0 = new Everything(1, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good" , "great, pet, nice, fluffy");
-//        Everything thing1 = new Everything(8, "Sanic", 2, "Just not a good Sanic" , "poor, horrible, murder, crime");
-//        Everything thing2 = new Everything(9, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much" , "sweet, I, love, Picard");
-//        int i = 0;
-//        i = insertEverything(thing0);
-//        insertTag(thing0);
-//        i = insertEverything(thing1);
-//        insertTag(thing1);
-//        i = insertEverything(thing2);
-//        insertTag(thing2);
+        Everything thing0 = new Everything(1, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good" , "great, pet, nice, fluffy");
+        Everything thing1 = new Everything(8, "Sanic", 2, "Just not a good Sanic" , "poor, horrible, murder, crime");
+        Everything thing2 = new Everything(9, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much" , "sweet, I, love, Picard");
+        int i = 0;
+        i = insertthing(thing0);
+        insertTag(thing0);
+        i = insertthing(thing1);
+        insertTag(thing1);
+        i = insertthing(thing2);
+        insertTag(thing2);
 
     }
 
@@ -318,6 +331,36 @@ public class SQLHelper extends SQLiteOpenHelper{
         db.close();
         return i;
     }
+    /*
+    Returns a sorted thing based on inputted column
+     */
+    public Cursor getEverythingSort(String column){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor;
+        boolean asc = true;
+        if (asc) {
+            cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                    null, // c. selections
+                    null, // d. selections args
+                    null, // e. group by
+                    null, // f. having
+                    column + " ASC", // g. order by
+                    null); // h. limit
+            asc = false;
+        } else {
+            cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                    null, // c. selections
+                    null, // d. selections args
+                    null, // e. group by
+                    null, // f. having
+                    column + " DESC", // g. order by
+                    null); // h. limit
+            asc = true;
+        }
+        return cursor;
+    }
 
     /**
      * method to get all the categories in an arraylist to use in drop down menuuuuu
@@ -342,6 +385,15 @@ public class SQLHelper extends SQLiteOpenHelper{
 
     public int getLastID(){
         String query = "SELECT last_insert_rowid()";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        int i = cursor.getInt(0);
+        return i;
+    }
+
+    public int getLastIDET(){
+        String query = "SELECT MAX("+ everythingTable._ID+") FROM " + everythingTable.TABLE_NAME;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
@@ -431,7 +483,7 @@ public class SQLHelper extends SQLiteOpenHelper{
 
         String[] selectionArgs2 = new String[]{String.valueOf(id)};
 
-        db.delete(TagTable.TABLE_NAME, selection, selectionArgs);
+        db.delete(TagTable.TABLE_NAME, selection2, selectionArgs2);
     }
 
     public Cursor getSpecificThing(String query, String choice){ //needs search entry as well as choice of which query to search
@@ -475,7 +527,6 @@ public class SQLHelper extends SQLiteOpenHelper{
                     List<String> items = Arrays.asList(tag.split("\\s*,\\s*"));
                     idargs[i] = (items.contains(query)) ? String.valueOf(idlist.get(i)):"z";
                 }
-                cursor.close();
                 cursor = db.query(everythingTable.TABLE_NAME, // a. table
                         new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
                         everythingTable.COLUMN_TAGS_ID + " = ?", // c. selections
