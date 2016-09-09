@@ -20,7 +20,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     public static final String DB_NAME = "everything_db";
 
     public SQLHelper(Context context) {
-        super(context, DB_NAME, null, 8);
+        super(context, DB_NAME, null, 10);
     }
 
     private static SQLHelper INSTANCE;
@@ -249,9 +249,9 @@ public class SQLHelper extends SQLiteOpenHelper{
 
 
 //        2nd db dummy initialize Everything format cat id, name, rating, review, tags
-        Everything thing0 = new Everything(1, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good" , "great, pet, nice, fluffy");
-        Everything thing1 = new Everything(8, "Sanic", 2, "Just not a good Sanic" , "poor, horrible, murder, crime");
-        Everything thing2 = new Everything(9, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much" , "sweet, I, love, Picard");
+        Everything thing0 = new Everything(2, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good" , "great, pet, nice, fluffy");
+        Everything thing1 = new Everything(11, "Sanic", 2, "Just not a good Sanic" , "poor, horrible, murder, crime");
+        Everything thing2 = new Everything(16, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much" , "sweet, I, love, Picard");
         int i = 0;
         i = insertthing(thing0);
         insertTag(thing0);
