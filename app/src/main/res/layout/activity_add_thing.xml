@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/reviewhint"
-            android:id="@+id/catAdd"/>
+            android:id="@+id/revAdd"/>
     </LinearLayout>
     <RatingBar
         android:layout_width="wrap_content"
