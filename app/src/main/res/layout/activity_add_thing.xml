@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name:"
+            android:text="@string/nametextadd"
             android:textSize="20sp"
             android:paddingRight="10dp"/>
         <EditText
@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category: "
+            android:text="@string/categorynameadd"
             android:textSize="20sp"/>
         <Spinner
             android:layout_width="match_parent"
@@ -58,14 +58,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tags: "
+            android:text="@string/tagsnameadd"
             android:textSize="20sp"
-            android:paddingRight="33dp"
+            android:paddingRight="39dp"
             />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Put Tags Here, Separated by Commas!!"/>
+            android:hint="@string/commahint"
+            android:id="@+id/tagAdd"/>
 
     </LinearLayout>
 
@@ -76,14 +77,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Review: "
+            android:text="@string/reviewnameadd"
             android:textSize="20sp"
-            android:paddingRight="15dp"
+            android:paddingRight="21dp"
             />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Type your review of this thing here!!"/>
+            android:hint="@string/reviewhint"
+            android:id="@+id/catAdd"/>
     </LinearLayout>
     <RatingBar
         android:layout_width="wrap_content"
@@ -96,8 +98,9 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ADD"
-        android:layout_gravity="end"/>
+        android:text="@string/bigassdd"
+        android:layout_gravity="end"
+        android:id="@+id/addButton"/>
 
 
 </LinearLayout>

@@ -16,4 +16,11 @@
     <string name="set_the_search_setting">Set the Search Setting</string>
     <string name="insert_name_here">Insert Name Here!!</string>
     <string name="press_to_insert_image">Press to insert image!</string>
+    <string name="nametextadd">Name:</string>
+    <string name="categorynameadd">Category:</string>
+    <string name="tagsnameadd">Tags:</string>
+    <string name="commahint">Put Tags Here, Separated by Commas!!</string>
+    <string name="reviewnameadd">Review:</string>
+    <string name="reviewhint">Type your review of this thing here!!</string>
+    <string name="bigassdd">ADD</string>
 </resources>
