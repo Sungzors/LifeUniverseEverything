@@ -176,14 +176,14 @@ public class SQLHelper extends SQLiteOpenHelper{
      */
     public void insertTag(Everything thing, int id) {
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
         List<String> taglist = thing.getmTag();
 
-//        values.put(TagTable.COLUMN_TAG, taglist);
-//        values.put(TagTable.COLUMN_THING_ID, id + 1);
-
-
-        db.insertOrThrow(TagTable.TABLE_NAME, null, values);
+        for (int i = 0; i < taglist.size(); i++) {
+            ContentValues values = new ContentValues();
+            values.put(TagTable.COLUMN_TAG, taglist.get(i));
+            values.put(TagTable.COLUMN_THING_ID, id + 1);
+            db.insertOrThrow(TagTable.TABLE_NAME, null, values);
+        }
     }
 
     public void insertTag(Everything thing) {
