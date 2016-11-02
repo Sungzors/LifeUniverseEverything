@@ -37,6 +37,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_ENTRIES_EVERYTHING);
         db.execSQL(SQL_CREATE_ENTRIES_CATEGORY);
         db.execSQL(SQL_CREATE_ENTRIES_TAG);
+        addDataToDb();
     }
 
     @Override
@@ -200,65 +201,68 @@ public class SQLHelper extends SQLiteOpenHelper{
      */
     public void addDataToDb() {
 // first cat initialize, hopefully cat id matches variable number (it's actually +1...)
-        Category cat0 = new Category("Action");
-        Category cat1 = new Category("Animal");
-        Category cat2 = new Category("Belief");
-        Category cat3 = new Category("Beverage");
-        Category cat4 = new Category("Book");
-        Category cat5 = new Category("Emotion");
-        Category cat6 = new Category("Event");
-        Category cat7 = new Category("Fiction");
-        Category cat8 = new Category("Food");
-        Category cat9 = new Category("Fruit");
-        Category cat10 = new Category("Game");
-        Category cat11 = new Category("Movie");
-        Category cat12 = new Category("Music");
-        Category cat13 = new Category("Person");
-        Category cat14 = new Category("Place");
-        Category cat15 = new Category("Show");
-        Category cat16 = new Category("State of Being");
-        Category cat17 = new Category("Time");
-        Category cat18 = new Category("Tool");
-        Category cat19 = new Category("Vegetable");
-        Category cat20 = new Category("18+");
-        Category cat21 = new Category("Other");
+
+        if(getAllCats().isEmpty()) {
+            Category cat0 = new Category("Action");
+            Category cat1 = new Category("Animal");
+            Category cat2 = new Category("Belief");
+            Category cat3 = new Category("Beverage");
+            Category cat4 = new Category("Book");
+            Category cat5 = new Category("Emotion");
+            Category cat6 = new Category("Event");
+            Category cat7 = new Category("Fiction");
+            Category cat8 = new Category("Food");
+            Category cat9 = new Category("Fruit");
+            Category cat10 = new Category("Game");
+            Category cat11 = new Category("Movie");
+            Category cat12 = new Category("Music");
+            Category cat13 = new Category("Person");
+            Category cat14 = new Category("Place");
+            Category cat15 = new Category("Show");
+            Category cat16 = new Category("State of Being");
+            Category cat17 = new Category("Time");
+            Category cat18 = new Category("Tool");
+            Category cat19 = new Category("Vegetable");
+            Category cat20 = new Category("18+");
+            Category cat21 = new Category("Other");
 
 
-        insertCategory(cat0);
-        insertCategory(cat1);
-        insertCategory(cat2);
-        insertCategory(cat3);
-        insertCategory(cat4);
-        insertCategory(cat5);
-        insertCategory(cat6);
-        insertCategory(cat7);
-        insertCategory(cat8);
-        insertCategory(cat9);
-        insertCategory(cat10);
-        insertCategory(cat11);
-        insertCategory(cat12);
-        insertCategory(cat13);
-        insertCategory(cat14);
-        insertCategory(cat15);
-        insertCategory(cat16);
-        insertCategory(cat17);
-        insertCategory(cat18);
-        insertCategory(cat19);
-        insertCategory(cat20);
-        insertCategory(cat21);
+            insertCategory(cat0);
+            insertCategory(cat1);
+            insertCategory(cat2);
+            insertCategory(cat3);
+            insertCategory(cat4);
+            insertCategory(cat5);
+            insertCategory(cat6);
+            insertCategory(cat7);
+            insertCategory(cat8);
+            insertCategory(cat9);
+            insertCategory(cat10);
+            insertCategory(cat11);
+            insertCategory(cat12);
+            insertCategory(cat13);
+            insertCategory(cat14);
+            insertCategory(cat15);
+            insertCategory(cat16);
+            insertCategory(cat17);
+            insertCategory(cat18);
+            insertCategory(cat19);
+            insertCategory(cat20);
+            insertCategory(cat21);
 
 
 //        2nd db dummy initialize Everything format cat id, name, rating, review, tags
-        Everything thing0 = new Everything(2, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good" , "great, pet, nice, fluffy");
-        Everything thing1 = new Everything(11, "Sanic", 2, "Just not a good Sanic" , "poor, horrible, murder, crime");
-        Everything thing2 = new Everything(16, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much" , "sweet, I, love, Picard");
-        int i = 0;
-        i = insertthing(thing0);
-        insertTag(thing0);
-        i = insertthing(thing1);
-        insertTag(thing1);
-        i = insertthing(thing2);
-        insertTag(thing2);
+            Everything thing0 = new Everything(2, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good", "great, pet, nice, fluffy");
+            Everything thing1 = new Everything(11, "Sanic", 2, "Just not a good Sanic", "poor, horrible, murder, crime");
+            Everything thing2 = new Everything(16, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much", "sweet, I, love, Picard");
+            int i = 0;
+            i = insertthing(thing0);
+            insertTag(thing0);
+            i = insertthing(thing1);
+            insertTag(thing1);
+            i = insertthing(thing2);
+            insertTag(thing2);
+        }
 
     }
 
