@@ -13,6 +13,7 @@ public class Everything {
     int mCat_id;
     int mRating;
     String mReview;
+    String mPicURL;
 
 
     public Everything(int mCat_id, String mName, int mRating, String mReview, String mTag) {
@@ -34,6 +35,15 @@ public class Everything {
     public void setmTag(String mTag) {
         StringBuilder str = new StringBuilder(this.mTag);
         str.append(", " + mTag);
+    }
+
+    public String getmPicURL() {
+        return mPicURL;
+    }
+
+    public void setmPicURL(String mPicURL) {
+
+        this.mPicURL = mPicURL;
     }
 
     public int getmCat_id() {

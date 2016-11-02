@@ -20,7 +20,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     public static final String DB_NAME = "everything_db";
 
     public SQLHelper(Context context) {
-        super(context, DB_NAME, null, 10);
+        super(context, DB_NAME, null, 11);
     }
 
     private static SQLHelper INSTANCE;
@@ -58,6 +58,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         public static final String COLUMN_RATINGS = "rating";
         public static final String COLUMN_CATEGORY_ID = "category_id";
         public static final String COLUMN_REVIEW = "review";
+        public static final String COLUMN_PICTURE = "picture";
     }
 
     /**
@@ -87,7 +88,8 @@ public class SQLHelper extends SQLiteOpenHelper{
             everythingTable.COLUMN_TAGS_ID + " INTEGER," +
             everythingTable.COLUMN_RATINGS + " INTEGER," +
             everythingTable.COLUMN_CATEGORY_ID + " INTEGER," +
-            everythingTable.COLUMN_REVIEW + " TEXT"+")";
+            everythingTable.COLUMN_REVIEW + " TEXT,"+
+            everythingTable.COLUMN_PICTURE + " TEXT" + ")";
 
     /**
      * SQL command to delete our everything table.
@@ -175,10 +177,10 @@ public class SQLHelper extends SQLiteOpenHelper{
     public void insertTag(Everything thing, int id) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        String taglist = thing.getmTag(true);
+        List<String> taglist = thing.getmTag();
 
-        values.put(TagTable.COLUMN_TAG, taglist);
-        values.put(TagTable.COLUMN_THING_ID, id + 1);
+//        values.put(TagTable.COLUMN_TAG, taglist);
+//        values.put(TagTable.COLUMN_THING_ID, id + 1);
 
 
         db.insertOrThrow(TagTable.TABLE_NAME, null, values);
