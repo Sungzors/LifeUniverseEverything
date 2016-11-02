@@ -24,10 +24,8 @@ public class MainActivity extends AppCompatActivity {
         mStart = (TextView)findViewById(R.id.StartButton);
         mAnimation = AnimationUtils.loadAnimation(this, R.anim.mainmenuanim);
         mLuedpic.startAnimation(mAnimation); //enables rotatoes in the background pic
-//        mHelper = new SQLHelper(this);
-//        mHelper.getWritableDatabase();
-//
-//        mHelper.addDataToDb();
+        mHelper = new SQLHelper(this);
+        mHelper.getWritableDatabase();
         mStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,5 +39,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         mLuedpic.clearAnimation();
         super.onStop();
+        mHelper.close();
     }
 }
