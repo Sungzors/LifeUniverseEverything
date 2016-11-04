@@ -37,7 +37,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_ENTRIES_EVERYTHING);
         db.execSQL(SQL_CREATE_ENTRIES_CATEGORY);
         db.execSQL(SQL_CREATE_ENTRIES_TAG);
-        addDataToDb();
+        addDataToDb(db);
     }
 
     @Override
@@ -147,6 +147,19 @@ public class SQLHelper extends SQLiteOpenHelper{
         return getLastID();
     }
 
+    public void insertthing(SQLiteDatabase db, Everything thing) {
+        ContentValues values = new ContentValues();
+
+        values.put(everythingTable.COLUMN_EVERYTHING, thing.getmName());
+        values.put(everythingTable.COLUMN_TAGS_ID, ii);
+        ii++;
+        values.put(everythingTable.COLUMN_RATINGS, thing.getmRating());
+        values.put(everythingTable.COLUMN_CATEGORY_ID, thing.getmCat_id());
+        values.put(everythingTable.COLUMN_REVIEW, thing.getmReview());
+        db.insertOrThrow(everythingTable.TABLE_NAME, null, values);
+
+    }
+
     public int insertEverything(Everything thing) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -164,8 +177,7 @@ public class SQLHelper extends SQLiteOpenHelper{
      * Insert a company into the database.
      * @param
      */
-    public void insertCategory(Category cat) {
-        SQLiteDatabase db = getWritableDatabase();
+    public void insertCategory(SQLiteDatabase db, Category cat) {
         ContentValues values = new ContentValues();
         values.put(CategoryTable.COLUMN_CATEGORY, cat.getmCatTitle());
         db.insertOrThrow(CategoryTable.TABLE_NAME, null, values);
@@ -186,25 +198,24 @@ public class SQLHelper extends SQLiteOpenHelper{
         }
     }
 
-    public void insertTag(Everything thing) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        String taglist = thing.getmTag(true);
+    public void insertTag(SQLiteDatabase db, Everything thing) {
+        List<String> taglist = thing.getmTag();
 
-        values.put(TagTable.COLUMN_TAG, taglist);
-        values.put(TagTable.COLUMN_THING_ID, ii - 1);
-
-
-        db.insertOrThrow(TagTable.TABLE_NAME, null, values);
+        for (int i = 0; i < taglist.size(); i++) {
+            ContentValues values = new ContentValues();
+            values.put(TagTable.COLUMN_TAG, taglist.get(i));
+            values.put(TagTable.COLUMN_THING_ID, ii-1);
+            db.insertOrThrow(TagTable.TABLE_NAME, null, values);
+        }
     }
 
     /**
      * Add some default data to the database.
      */
-    public void addDataToDb() {
+    public void addDataToDb(SQLiteDatabase db) {
 // first cat initialize, hopefully cat id matches variable number (it's actually +1...)
 
-        if(getAllCats().isEmpty()) {
+
             Category cat0 = new Category("Action");
             Category cat1 = new Category("Animal");
             Category cat2 = new Category("Belief");
@@ -229,28 +240,28 @@ public class SQLHelper extends SQLiteOpenHelper{
             Category cat21 = new Category("Other");
 
 
-            insertCategory(cat0);
-            insertCategory(cat1);
-            insertCategory(cat2);
-            insertCategory(cat3);
-            insertCategory(cat4);
-            insertCategory(cat5);
-            insertCategory(cat6);
-            insertCategory(cat7);
-            insertCategory(cat8);
-            insertCategory(cat9);
-            insertCategory(cat10);
-            insertCategory(cat11);
-            insertCategory(cat12);
-            insertCategory(cat13);
-            insertCategory(cat14);
-            insertCategory(cat15);
-            insertCategory(cat16);
-            insertCategory(cat17);
-            insertCategory(cat18);
-            insertCategory(cat19);
-            insertCategory(cat20);
-            insertCategory(cat21);
+            insertCategory(db, cat0);
+            insertCategory(db, cat1);
+            insertCategory(db, cat2);
+            insertCategory(db, cat3);
+            insertCategory(db, cat4);
+            insertCategory(db, cat5);
+            insertCategory(db, cat6);
+            insertCategory(db, cat7);
+            insertCategory(db, cat8);
+            insertCategory(db, cat9);
+            insertCategory(db, cat10);
+            insertCategory(db, cat11);
+            insertCategory(db, cat12);
+            insertCategory(db, cat13);
+            insertCategory(db, cat14);
+            insertCategory(db, cat15);
+            insertCategory(db, cat16);
+            insertCategory(db, cat17);
+            insertCategory(db, cat18);
+            insertCategory(db, cat19);
+            insertCategory(db, cat20);
+            insertCategory(db, cat21);
 
 
 //        2nd db dummy initialize Everything format cat id, name, rating, review, tags
@@ -258,13 +269,13 @@ public class SQLHelper extends SQLiteOpenHelper{
             Everything thing1 = new Everything(11, "Sanic", 2, "Just not a good Sanic", "poor, horrible, murder, crime");
             Everything thing2 = new Everything(16, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much", "sweet, I, love, Picard");
             int i = 0;
-            i = insertthing(thing0);
-            insertTag(thing0);
-            i = insertthing(thing1);
-            insertTag(thing1);
-            i = insertthing(thing2);
-            insertTag(thing2);
-        }
+            insertthing(db, thing0);
+            insertTag(db, thing0);
+            insertthing(db, thing1);
+            insertTag(db, thing1);
+            insertthing(db, thing2);
+            insertTag(db, thing2);
+
 
     }
 

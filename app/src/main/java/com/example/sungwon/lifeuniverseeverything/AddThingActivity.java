@@ -1,8 +1,10 @@
 package com.example.sungwon.lifeuniverseeverything;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +39,7 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
         mRevAdd = (EditText)findViewById(R.id.revAdd);
         mRatingBar = (RatingBar)findViewById(R.id.ratingBar);
         mAddButton = (Button)findViewById(R.id.addButton);
+        mLUEpic = (ImageView)findViewById(R.id.addImage);
         mHelper = new SQLHelper(this);
         ArrayList<String> catarray= SQLHelper.getInstance(this).getAllCats();
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
@@ -48,6 +51,16 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
                 mRating = (int) (v * 2);
+            }
+        });
+
+        mLUEpic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddThingActivity.this);
+                final EditText urlinput = new EditText(AddThingActivity.this);
+                urlinput.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(urlinput);
             }
         });
         mAddButton.setOnClickListener(new View.OnClickListener() {
