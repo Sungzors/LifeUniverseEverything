@@ -1,9 +1,11 @@
 package com.example.sungwon.lifeuniverseeverything;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
@@ -61,6 +63,21 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
                 final EditText urlinput = new EditText(AddThingActivity.this);
                 urlinput.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(urlinput);
+                builder.setMessage(R.string.imageaddtitle)
+                        .setPositiveButton(R.string.positivebutton, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setNegativeButton(R.string.negativebutton, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                Dialog dialog = builder.create();
+                dialog.show();
             }
         });
         mAddButton.setOnClickListener(new View.OnClickListener() {

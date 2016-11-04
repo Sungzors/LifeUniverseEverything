@@ -23,4 +23,7 @@
     <string name="reviewnameadd">Review:</string>
     <string name="reviewhint">Type your review of this thing here!!</string>
     <string name="bigassdd">ADD</string>
+    <string name="imageaddtitle">Please Insert Image URL</string>
+    <string name="positivebutton">Insert</string>
+    <string name="negativebutton">Cancel</string>
 </resources>
