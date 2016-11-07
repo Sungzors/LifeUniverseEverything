@@ -27,8 +27,9 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
     RatingBar mRatingBar;
     Button mAddButton;
     SQLHelper mHelper;
-    String catselect;
+    String mCatselect;
     int mRating = 0;
+    String mPicURL = "";
 
 
     @Override
@@ -67,13 +68,13 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
                         .setPositiveButton(R.string.positivebutton, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                mPicURL = urlinput.getText().toString();
                             }
                         })
                         .setNegativeButton(R.string.negativebutton, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                dialog.dismiss();
                             }
                         });
                 Dialog dialog = builder.create();
@@ -86,9 +87,12 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
                 String name = mNameTextAdd.getText().toString();
                 String tags = mTagAdd.getText().toString();
                 String rev = mRevAdd.getText().toString();
-                int cid = mHelper.getCategoryid(catselect);
+                int cid = mHelper.getCategoryid(mCatselect);
 
                 Everything thing = new Everything(cid, name, mRating, rev, tags );
+                if(!mPicURL.isEmpty()){
+                    thing.setmPicURL(mPicURL);
+                }
                 int bb = mHelper.insertEverything(thing);
                 mHelper.insertTag(thing, bb);
 
@@ -100,11 +104,11 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        catselect = adapterView.getItemAtPosition(i).toString();
+        mCatselect = adapterView.getItemAtPosition(i).toString();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        catselect = "state of being";
+        mCatselect = "state of being";
     }
 }
