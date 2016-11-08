@@ -20,7 +20,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     public static final String DB_NAME = "everything_db";
 
     public SQLHelper(Context context) {
-        super(context, DB_NAME, null, 11);
+        super(context, DB_NAME, null, 12);
     }
 
     private static SQLHelper INSTANCE;
@@ -54,7 +54,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     public static abstract class everythingTable implements BaseColumns {
         public static final String TABLE_NAME = "everything_table";
         public static final String COLUMN_EVERYTHING = "everything_name";
-        public static final String COLUMN_TAGS_ID = "tags_id";
+        public static final String COLUMN_TAGSTHING = "tags";
         public static final String COLUMN_RATINGS = "rating";
         public static final String COLUMN_CATEGORY_ID = "category_id";
         public static final String COLUMN_REVIEW = "review";
@@ -85,7 +85,7 @@ public class SQLHelper extends SQLiteOpenHelper{
             everythingTable.TABLE_NAME + " (" +
             everythingTable._ID + " INTEGER PRIMARY KEY," +
             everythingTable.COLUMN_EVERYTHING + " TEXT," +
-            everythingTable.COLUMN_TAGS_ID + " INTEGER," +
+            everythingTable.COLUMN_TAGSTHING + " TEXT," +
             everythingTable.COLUMN_RATINGS + " INTEGER," +
             everythingTable.COLUMN_CATEGORY_ID + " INTEGER," +
             everythingTable.COLUMN_REVIEW + " TEXT,"+
@@ -137,7 +137,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
 
         values.put(everythingTable.COLUMN_EVERYTHING, thing.getmName());
-        values.put(everythingTable.COLUMN_TAGS_ID, ii);
+        values.put(everythingTable.COLUMN_TAGSTHING, thing.getmTag(true));
         ii++;
         values.put(everythingTable.COLUMN_RATINGS, thing.getmRating());
         values.put(everythingTable.COLUMN_CATEGORY_ID, thing.getmCat_id());
@@ -151,7 +151,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
 
         values.put(everythingTable.COLUMN_EVERYTHING, thing.getmName());
-        values.put(everythingTable.COLUMN_TAGS_ID, ii);
+        values.put(everythingTable.COLUMN_TAGSTHING, thing.getmTag(true));
         ii++;
         values.put(everythingTable.COLUMN_RATINGS, thing.getmRating());
         values.put(everythingTable.COLUMN_CATEGORY_ID, thing.getmCat_id());
@@ -165,7 +165,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         int x = getLastIDET();
         values.put(everythingTable.COLUMN_EVERYTHING, thing.getmName());
-        values.put(everythingTable.COLUMN_TAGS_ID, x+1);
+        values.put(everythingTable.COLUMN_TAGSTHING, x+1);
         values.put(everythingTable.COLUMN_RATINGS, thing.getmRating());
         values.put(everythingTable.COLUMN_CATEGORY_ID, thing.getmCat_id());
         values.put(everythingTable.COLUMN_REVIEW, thing.getmReview());
@@ -288,7 +288,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 //        LinkedList<Everything> list = new LinkedList<>();
         Cursor cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
                 null, // c. selections
                 null, // d. selections args
                 null, // e. group by
@@ -297,7 +297,7 @@ public class SQLHelper extends SQLiteOpenHelper{
                 null); // h. limit
 //        cursor.moveToFirst();
 //        while(!cursor.isAfterLast()){
-//            int tagid = cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGS_ID));
+//            int tagid = cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGSTHING));
 //            String tags = getTag(tagid);
 //            Everything thing = new Everything(cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_CATEGORY_ID)),
 //                    cursor.getString(cursor.getColumnIndex(everythingTable.COLUMN_EVERYTHING)),
@@ -316,7 +316,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         String sid = String.valueOf(id);
 //        LinkedList<Everything> list = new LinkedList<>();
         Cursor cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                new String[]{everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                new String[]{everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
                 everythingTable._ID + " = ?", // c. selections
                 new String[]{sid}, // d. selections args
                 null, // e. group by
@@ -351,13 +351,12 @@ public class SQLHelper extends SQLiteOpenHelper{
     /*
     Returns a sorted thing based on inputted column
      */
-    public Cursor getEverythingSort(String column){
+    public Cursor getEverythingSort(String column, boolean asc){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor;
-        boolean asc = true;
         if (asc) {
             cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
                     null, // c. selections
                     null, // d. selections args
                     null, // e. group by
@@ -367,7 +366,7 @@ public class SQLHelper extends SQLiteOpenHelper{
             asc = false;
         } else {
             cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
                     null, // c. selections
                     null, // d. selections args
                     null, // e. group by
@@ -510,7 +509,7 @@ public class SQLHelper extends SQLiteOpenHelper{
             case "everything":
 
                 cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
                         everythingTable.COLUMN_EVERYTHING + " LIKE ?", // c. selections
                         new String[]{'%' + query + '%'}, // d. selections args
                         null, // e. group by
@@ -523,7 +522,7 @@ public class SQLHelper extends SQLiteOpenHelper{
             case "tag":
                 ArrayList<Integer> idlist = new ArrayList<>();
                 cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable.COLUMN_TAGS_ID}, // b. column names
+                        new String[]{everythingTable.COLUMN_TAGSTHING}, // b. column names
                         null, // c. selections
                         null, // d. selections args
                         null, // e. group by
@@ -534,7 +533,7 @@ public class SQLHelper extends SQLiteOpenHelper{
                 DatabaseUtils.dumpCursor(cursor);
                 while(cursor.moveToNext()){
 
-                    idlist.add(cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGS_ID)));
+                    idlist.add(cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGSTHING)));
 
                 }
                 if(idlist.size()==0) {cursor.close(); break;}
@@ -545,8 +544,8 @@ public class SQLHelper extends SQLiteOpenHelper{
                     idargs[i] = (items.contains(query)) ? String.valueOf(idlist.get(i)):"z";
                 }
                 cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
-                        everythingTable.COLUMN_TAGS_ID + " = ?", // c. selections
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
+                        everythingTable.COLUMN_TAGSTHING + " = ?", // c. selections
                         idargs, // d. selections args
                         null, // e. group by
                         null, // f. having
@@ -572,7 +571,7 @@ public class SQLHelper extends SQLiteOpenHelper{
                     cidargs[i]=String.valueOf(cidlist.get(i));
                 }
                 cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGS_ID}, // b. column names
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
                         everythingTable.COLUMN_CATEGORY_ID + " = ?", // c. selections
                         cidargs, // d. selections args
                         null, // e. group by

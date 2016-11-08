@@ -41,6 +41,9 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
     String mSetting = "everything";
     ImageButton mSettingButt;
     int mStackLevel = 0;
+    boolean aasc = true;
+    boolean casc = true;
+    boolean rasc = true;
 
     @Override
     public void onSearchButtonSubmit(String setting) {
@@ -133,21 +136,24 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         mAlpha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_EVERYTHING);
+                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_EVERYTHING, aasc);
+                aasc = !aasc;
                 mCursorAdapter.changeCursor(cursor);
             }
         });
         mCata.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_CATEGORY_ID);
+                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_CATEGORY_ID, casc);
+                casc = !casc;
                 mCursorAdapter.changeCursor(cursor);
             }
         });
         mRata.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_RATINGS);
+                Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_RATINGS, rasc);
+                rasc = !rasc;
                 mCursorAdapter.changeCursor(cursor);
             }
         });

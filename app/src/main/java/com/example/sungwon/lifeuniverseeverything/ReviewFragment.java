@@ -63,7 +63,7 @@ public class ReviewFragment extends DialogFragment {
 
         mRevName.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_EVERYTHING)));
         mRevCat.setText(mHelper.getCategory(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_CATEGORY_ID))));
-        mRevTag.setText(mHelper.getTag(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_TAGS_ID))));
+        mRevTag.setText(mHelper.getTag(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_TAGSTHING))));
         mRevRev.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_REVIEW)));
         mRatingRev.setRating(((float)cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_RATINGS)))/2);
 
