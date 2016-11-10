@@ -3,13 +3,11 @@ package com.example.sungwon.lifeuniverseeverything;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -520,47 +518,18 @@ public class SQLHelper extends SQLiteOpenHelper{
                 break;
 
             case "tag":
-                ArrayList<Integer> idlist = new ArrayList<>();
-                cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable.COLUMN_TAGSTHING}, // b. column names
-                        null, // c. selections
-                        null, // d. selections args
-                        null, // e. group by
-                        null, // f. having
-                        null, // g. order by
-                        null); // h. limit
 
-                DatabaseUtils.dumpCursor(cursor);
-                while(cursor.moveToNext()){
-
-                    idlist.add(cursor.getInt(cursor.getColumnIndex(everythingTable.COLUMN_TAGSTHING)));
-
-                }
-                if(idlist.size()==0) {cursor.close(); break;}
-                String[] idargs = new String[idlist.size()];
-                for (int i = 0; i < idlist.size(); i++) {
-                    String tag = getTag(idlist.get(i));
-                    List<String> items = Arrays.asList(tag.split("\\s*,\\s*"));
-                    idargs[i] = (items.contains(query)) ? String.valueOf(idlist.get(i)):"z";
-                }
-                cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
-                        everythingTable.COLUMN_TAGSTHING + " = ?", // c. selections
-                        idargs, // d. selections args
-                        null, // e. group by
-                        null, // f. having
-                        null, // g. order by
-                        null); // h. limit
                 break;
             case "cat":
-                cursor = db.query(CategoryTable.TABLE_NAME, // a. table
-                        new String[]{CategoryTable._ID}, // b. column names
-                        CategoryTable.COLUMN_CATEGORY + " = ?", // c. selections
-                        new String[]{query}, // d. selections args
-                        null, // e. group by
-                        null, // f. having
-                        null, // g. order by
-                        null); // h. limit
+//                cursor = db.query(CategoryTable.TABLE_NAME, // a. table
+//                        new String[]{CategoryTable._ID}, // b. column names
+//                        CategoryTable.COLUMN_CATEGORY + " = ?", // c. selections
+//                        new String[]{query}, // d. selections args
+//                        null, // e. group by
+//                        null, // f. having
+//                        null, // g. order by
+//                        null); // h. limit
+                cursor = db.rawQuery("SELECT DISTINCT "+ CategoryTable._ID + " FROM " + CategoryTable.TABLE_NAME + " WHERE UPPER("+CategoryTable.COLUMN_CATEGORY+") LIKE UPPER("+"'%" + query+"%')", null);
                 ArrayList<Integer> cidlist = new ArrayList<>();
                 while(cursor.moveToNext()){
                     cidlist.add(cursor.getInt(cursor.getColumnIndex(CategoryTable._ID)));

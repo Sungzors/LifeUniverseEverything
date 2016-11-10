@@ -15,12 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,7 +39,6 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
     SQLHelper helper;
     CursorAdapter mCursorAdapter;
     String mSetting = "everything";
-    ImageButton mSettingButt;
     int mStackLevel = 0;
     boolean aasc = true;
     boolean casc = true;
@@ -61,7 +60,6 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         mAlpha = (Button) findViewById(R.id.alphabetizor);
         mCata = (Button) findViewById(R.id.categorizor);
         mRata = (Button) findViewById(R.id.ratingzor);
-        mSettingButt = (ImageButton) findViewById(R.id.settingButt);
 
         mEverythingPic = (ImageView) findViewById(R.id.everythingPic);
 
@@ -93,12 +91,6 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
 
         mEverythingView.setAdapter(mCursorAdapter);
 
-        mSettingButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialog();
-            }
-        });
 
         mEverythingView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -176,6 +168,16 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.settingButt){
+            showDialog();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void handleIntent(Intent intent) {
