@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by SungWon on 9/6/2016.
@@ -507,7 +509,7 @@ public class SQLHelper extends SQLiteOpenHelper{
             case "everything":
 
                 cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
                         everythingTable.COLUMN_EVERYTHING + " LIKE ?", // c. selections
                         new String[]{'%' + query + '%'}, // d. selections args
                         null, // e. group by
@@ -518,17 +520,25 @@ public class SQLHelper extends SQLiteOpenHelper{
                 break;
 
             case "tag":
-
+                cursor = db.rawQuery("SELECT DISTINCT "+ TagTable.COLUMN_THING_ID + " FROM " + TagTable.TABLE_NAME + " WHERE UPPER("+TagTable.COLUMN_TAG+") LIKE UPPER("+"'%" + query+"%')", null);
+                Set<String> tidlist = new HashSet<>();
+                if(cursor.getCount()==0){cursor.close(); break;}
+                cursor.moveToFirst();
+                for (int i = 0; i < tidlist.size(); i++) {
+                    tidlist.add(String.valueOf(cursor.getInt(cursor.getColumnIndex(TagTable.COLUMN_THING_ID))));
+                }
+                String[] tidnodupe = tidlist.toArray(new String[tidlist.size()]);
+                cursor = db.query(everythingTable.TABLE_NAME, // a. table
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
+                        everythingTable._ID + " = ?", // c. selections
+                        tidnodupe, // d. selections args
+                        null, // e. group by
+                        null, // f. having
+                        null, // g. order by
+                        null); // h. limit
                 break;
+
             case "cat":
-//                cursor = db.query(CategoryTable.TABLE_NAME, // a. table
-//                        new String[]{CategoryTable._ID}, // b. column names
-//                        CategoryTable.COLUMN_CATEGORY + " = ?", // c. selections
-//                        new String[]{query}, // d. selections args
-//                        null, // e. group by
-//                        null, // f. having
-//                        null, // g. order by
-//                        null); // h. limit
                 cursor = db.rawQuery("SELECT DISTINCT "+ CategoryTable._ID + " FROM " + CategoryTable.TABLE_NAME + " WHERE UPPER("+CategoryTable.COLUMN_CATEGORY+") LIKE UPPER("+"'%" + query+"%')", null);
                 ArrayList<Integer> cidlist = new ArrayList<>();
                 while(cursor.moveToNext()){
@@ -540,7 +550,7 @@ public class SQLHelper extends SQLiteOpenHelper{
                     cidargs[i]=String.valueOf(cidlist.get(i));
                 }
                 cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
+                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
                         everythingTable.COLUMN_CATEGORY_ID + " = ?", // c. selections
                         cidargs, // d. selections args
                         null, // e. group by
