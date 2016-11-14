@@ -185,7 +185,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getSpecificThing(query, mSetting);
-            cursor.moveToFirst();
+
 
             mCursorAdapter.changeCursor(cursor);
         }

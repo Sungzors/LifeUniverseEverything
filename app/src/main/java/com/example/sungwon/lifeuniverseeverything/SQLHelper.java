@@ -8,10 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by SungWon on 9/6/2016.
@@ -516,18 +514,35 @@ public class SQLHelper extends SQLiteOpenHelper{
                         null, // f. having
                         null, // g. order by
                         null); // h. limit
-
+                cursor.moveToFirst();
                 break;
 
             case "tag":
-                cursor = db.rawQuery("SELECT DISTINCT "+ TagTable.COLUMN_THING_ID + " FROM " + TagTable.TABLE_NAME + " WHERE UPPER("+TagTable.COLUMN_TAG+") LIKE UPPER("+"'%" + query+"%')", null);
-                Set<String> tidlist = new HashSet<>();
-                if(cursor.getCount()==0){cursor.close(); break;}
+                cursor = db.rawQuery("SELECT DISTINCT "+ TagTable.COLUMN_THING_ID + ", " + TagTable.COLUMN_TAG + " FROM " + TagTable.TABLE_NAME + " WHERE UPPER("+TagTable.COLUMN_TAG+") LIKE UPPER("+"'%" + query+"%')", null);
+                if(cursor.getCount()==0){cursor = null; break;}
+                ArrayList<String> tidlist = new ArrayList<>();
+                tidlist.add(0, "");
                 cursor.moveToFirst();
-                for (int i = 0; i < tidlist.size(); i++) {
-                    tidlist.add(String.valueOf(cursor.getInt(cursor.getColumnIndex(TagTable.COLUMN_THING_ID))));
+                int x = 1;
+                while(cursor.moveToNext()){
+                    String s = String.valueOf(cursor.getInt(cursor.getColumnIndex(TagTable.COLUMN_THING_ID)));
+                    if(tidlist.get(x-1).equals(s)==false){
+                        tidlist.add(x, s);
+                        x++;
+                    }
                 }
-                String[] tidnodupe = tidlist.toArray(new String[tidlist.size()]);
+                String[] tidnodupe = new String[tidlist.size()-1];
+                for (int j = 1; j < tidlist.size(); j++) {
+                    tidnodupe[j-1] = tidlist.get(j);
+                }
+
+//                Set<String> tidlist = new HashSet<>();
+//                if(cursor.getCount()==0){cursor=null; break;}
+//                cursor.moveToFirst();
+//                while(cursor.moveToNext()) {
+//                    tidlist.add(String.valueOf(cursor.getInt(cursor.getColumnIndex(TagTable.COLUMN_THING_ID))));
+//                }
+//                String[] tidnodupe = tidlist.toArray(new String[tidlist.size()]);
                 cursor = db.query(everythingTable.TABLE_NAME, // a. table
                         new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
                         everythingTable._ID + " = ?", // c. selections
@@ -536,6 +551,7 @@ public class SQLHelper extends SQLiteOpenHelper{
                         null, // f. having
                         null, // g. order by
                         null); // h. limit
+                cursor.moveToFirst();
                 break;
 
             case "cat":
@@ -557,6 +573,7 @@ public class SQLHelper extends SQLiteOpenHelper{
                         null, // f. having
                         null, // g. order by
                         null); // h. limit
+                cursor.moveToFirst();
                 break;
         }
 
