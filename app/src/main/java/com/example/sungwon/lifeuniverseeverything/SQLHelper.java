@@ -18,7 +18,7 @@ public class SQLHelper extends SQLiteOpenHelper{
     public static final String DB_NAME = "everything_db";
 
     public SQLHelper(Context context) {
-        super(context, DB_NAME, null, 12);
+        super(context, DB_NAME, null, 13);
     }
 
     private static SQLHelper INSTANCE;
@@ -154,6 +154,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         values.put(everythingTable.COLUMN_RATINGS, thing.getmRating());
         values.put(everythingTable.COLUMN_CATEGORY_ID, thing.getmCat_id());
         values.put(everythingTable.COLUMN_REVIEW, thing.getmReview());
+        values.put(everythingTable.COLUMN_PICTURE, thing.getmPicURL());
         db.insertOrThrow(everythingTable.TABLE_NAME, null, values);
 
     }
@@ -163,10 +164,11 @@ public class SQLHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         int x = getLastIDET();
         values.put(everythingTable.COLUMN_EVERYTHING, thing.getmName());
-        values.put(everythingTable.COLUMN_TAGSTHING, x+1);
+        values.put(everythingTable.COLUMN_TAGSTHING, thing.getmTag(true));
         values.put(everythingTable.COLUMN_RATINGS, thing.getmRating());
         values.put(everythingTable.COLUMN_CATEGORY_ID, thing.getmCat_id());
         values.put(everythingTable.COLUMN_REVIEW, thing.getmReview());
+        values.put(everythingTable.COLUMN_PICTURE, thing.getmPicURL());
         db.insertOrThrow(everythingTable.TABLE_NAME, null, values);
         return x;
     }
@@ -214,65 +216,68 @@ public class SQLHelper extends SQLiteOpenHelper{
 // first cat initialize, hopefully cat id matches variable number (it's actually +1...)
 
 
-            Category cat0 = new Category("Action");
-            Category cat1 = new Category("Animal");
-            Category cat2 = new Category("Belief");
-            Category cat3 = new Category("Beverage");
-            Category cat4 = new Category("Book");
-            Category cat5 = new Category("Emotion");
-            Category cat6 = new Category("Event");
-            Category cat7 = new Category("Fiction");
-            Category cat8 = new Category("Food");
-            Category cat9 = new Category("Fruit");
-            Category cat10 = new Category("Game");
-            Category cat11 = new Category("Movie");
-            Category cat12 = new Category("Music");
-            Category cat13 = new Category("Person");
-            Category cat14 = new Category("Place");
-            Category cat15 = new Category("Show");
-            Category cat16 = new Category("State of Being");
-            Category cat17 = new Category("Time");
-            Category cat18 = new Category("Tool");
-            Category cat19 = new Category("Vegetable");
-            Category cat20 = new Category("18+");
-            Category cat21 = new Category("Other");
+        Category cat0 = new Category("Action");
+        Category cat1 = new Category("Animal");
+        Category cat2 = new Category("Belief");
+        Category cat3 = new Category("Beverage");
+        Category cat4 = new Category("Book");
+        Category cat5 = new Category("Emotion");
+        Category cat6 = new Category("Event");
+        Category cat7 = new Category("Fiction");
+        Category cat8 = new Category("Food");
+        Category cat9 = new Category("Fruit");
+        Category cat10 = new Category("Game");
+        Category cat11 = new Category("Movie");
+        Category cat12 = new Category("Music");
+        Category cat13 = new Category("Person");
+        Category cat14 = new Category("Place");
+        Category cat15 = new Category("Show");
+        Category cat16 = new Category("State of Being");
+        Category cat17 = new Category("Time");
+        Category cat18 = new Category("Tool");
+        Category cat19 = new Category("Vegetable");
+        Category cat20 = new Category("18+");
+        Category cat21 = new Category("Other");
 
 
-            insertCategory(db, cat0);
-            insertCategory(db, cat1);
-            insertCategory(db, cat2);
-            insertCategory(db, cat3);
-            insertCategory(db, cat4);
-            insertCategory(db, cat5);
-            insertCategory(db, cat6);
-            insertCategory(db, cat7);
-            insertCategory(db, cat8);
-            insertCategory(db, cat9);
-            insertCategory(db, cat10);
-            insertCategory(db, cat11);
-            insertCategory(db, cat12);
-            insertCategory(db, cat13);
-            insertCategory(db, cat14);
-            insertCategory(db, cat15);
-            insertCategory(db, cat16);
-            insertCategory(db, cat17);
-            insertCategory(db, cat18);
-            insertCategory(db, cat19);
-            insertCategory(db, cat20);
-            insertCategory(db, cat21);
+        insertCategory(db, cat0);
+        insertCategory(db, cat1);
+        insertCategory(db, cat2);
+        insertCategory(db, cat3);
+        insertCategory(db, cat4);
+        insertCategory(db, cat5);
+        insertCategory(db, cat6);
+        insertCategory(db, cat7);
+        insertCategory(db, cat8);
+        insertCategory(db, cat9);
+        insertCategory(db, cat10);
+        insertCategory(db, cat11);
+        insertCategory(db, cat12);
+        insertCategory(db, cat13);
+        insertCategory(db, cat14);
+        insertCategory(db, cat15);
+        insertCategory(db, cat16);
+        insertCategory(db, cat17);
+        insertCategory(db, cat18);
+        insertCategory(db, cat19);
+        insertCategory(db, cat20);
+        insertCategory(db, cat21);
 
 
 //        2nd db dummy initialize Everything format cat id, name, rating, review, tags
-            Everything thing0 = new Everything(2, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good", "great, pet, nice, fluffy");
-            Everything thing1 = new Everything(11, "Sanic", 2, "Just not a good Sanic", "poor, horrible, murder, crime");
-            Everything thing2 = new Everything(16, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much", "sweet, I, love, Picard");
-            int i = 0;
-            insertthing(db, thing0);
-            insertTag(db, thing0);
-            insertthing(db, thing1);
-            insertTag(db, thing1);
-            insertthing(db, thing2);
-            insertTag(db, thing2);
+        Everything thing0 = new Everything(2, "Milkie, a Shi-tzu", 7, "She's pretty much pretty good", "great, pet, nice, fluffy");
+        Everything thing1 = new Everything(11, "Sanic", 2, "Just not a good Sanic", "poor, horrible, murder, crime");
+        Everything thing2 = new Everything(16, "Star Trek: The Next Generation", 10, "Pretty much the best show pretty much", "sweet, I, love, Picard");
+        thing0.setmPicURL("http://cdn2-www.dogtime.com/assets/uploads/gallery/shih-tzu-dog-breed-pictures/shih-tzu-breed-picture-8.jpg");
+        thing1.setmPicURL("http://vignette1.wikia.nocookie.net/meme/images/4/42/1385136139955.png/revision/latest?cb=20150207013804");
+        thing2.setmPicURL("http://www.blastr.com/sites/blastr/files/styles/blog_post_in_content_image/public/PicardRikerTNGfacepalm1_1.jpg?itok=h6_Lcsaq");
+        int i = 0;
+        insertthing(db, thing0);
+        insertTag(db, thing0);
+        insertthing(db, thing1);
+        insertTag(db, thing1);
+        insertthing(db, thing2);
+        insertTag(db, thing2);
 
 
     }
@@ -522,17 +527,16 @@ public class SQLHelper extends SQLiteOpenHelper{
                 if(cursor.getCount()==0){cursor = null; break;}
                 ArrayList<String> tidlist = new ArrayList<>();
                 tidlist.add(0, "");
-                cursor.moveToFirst();
                 int x = 1;
                 while(cursor.moveToNext()){
                     String s = String.valueOf(cursor.getInt(cursor.getColumnIndex(TagTable.COLUMN_THING_ID)));
-                    if(tidlist.get(x-1).equals(s)==false){
+                    if(!tidlist.get(x-1).equals(s)){
                         tidlist.add(x, s);
                         x++;
                     }
                 }
                 String[] tidnodupe = new String[tidlist.size()-1];
-                for (int j = 1; j < tidlist.size(); j++) {
+                for (int j = 1; j <= tidlist.size()-1; j++) {
                     tidnodupe[j-1] = tidlist.get(j);
                 }
 
