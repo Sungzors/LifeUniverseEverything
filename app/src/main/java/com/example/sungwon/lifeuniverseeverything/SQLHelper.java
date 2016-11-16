@@ -525,37 +525,18 @@ public class SQLHelper extends SQLiteOpenHelper{
 
             case "tag":
                 cursor = db.rawQuery("SELECT DISTINCT "+ TagTable.COLUMN_THING_ID + ", " + TagTable.COLUMN_TAG + " FROM " + TagTable.TABLE_NAME + " WHERE UPPER("+TagTable.COLUMN_TAG+") LIKE UPPER("+"'%" + query+"%')", null);
-                if(cursor.getCount()==0){cursor = null; break;}
                 ArrayList<String> tidlist = new ArrayList<>();
-                tidlist.add(0, "");
-                int x = 1;
                 while(cursor.moveToNext()){
-                    String s = String.valueOf(cursor.getInt(cursor.getColumnIndex(TagTable.COLUMN_THING_ID)));
-                    if(!tidlist.get(x-1).equals(s)){
-                        tidlist.add(x, s);
-                        x++;
-                    }
+                    tidlist.add(String.valueOf(cursor.getInt(cursor.getColumnIndex(TagTable.COLUMN_THING_ID))));
                 }
-                String[] tidnodupe = new String[tidlist.size()-1];
-                for (int j = 1; j <= tidlist.size()-1; j++) {
-                    tidnodupe[j-1] = tidlist.get(j);
+                if(tidlist.size()==0) {cursor.close(); break;}
+                String[] tidnodupe = new String[tidlist.size()];
+                for (int j = 0; j < tidlist.size(); j++) {
+                    tidnodupe[j] = tidlist.get(j);
                 }
-
-//                Set<String> tidlist = new HashSet<>();
-//                if(cursor.getCount()==0){cursor=null; break;}
-//                cursor.moveToFirst();
-//                while(cursor.moveToNext()) {
-//                    tidlist.add(String.valueOf(cursor.getInt(cursor.getColumnIndex(TagTable.COLUMN_THING_ID))));
-//                }
-//                String[] tidnodupe = tidlist.toArray(new String[tidlist.size()]);
-                cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                        new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
-                        everythingTable._ID + " = ?", // c. selections
-                        tidnodupe, // d. selections args
-                        null, // e. group by
-                        null, // f. having
-                        null, // g. order by
-                        null); // h. limit
+                String args = "SELECT * FROM "+ everythingTable.TABLE_NAME
+                    + " WHERE "+ everythingTable._ID +" IN (" + makePlaceholders(tidnodupe.length) + ")";
+                cursor = db.rawQuery(args, tidnodupe);
                 cursor.moveToFirst();
                 break;
 
@@ -583,5 +564,19 @@ public class SQLHelper extends SQLiteOpenHelper{
         }
 
         return cursor;
+    }
+
+    String makePlaceholders(int len) {
+        if (len < 1) {
+            // It will lead to an invalid query anyway ..
+            throw new RuntimeException("No placeholders");
+        } else {
+            StringBuilder sb = new StringBuilder(len * 2 - 1);
+            sb.append("?");
+            for (int i = 1; i < len; i++) {
+                sb.append(",?");
+            }
+            return sb.toString();
+        }
     }
 }
