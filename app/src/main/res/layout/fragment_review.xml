@@ -28,7 +28,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/revName"
             android:paddingTop="10dp"
-            android:textSize="25sp"/>
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"/>
     </LinearLayout>
 
     <LinearLayout
@@ -43,7 +46,7 @@
             android:textSize="20sp"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/revCat"
             android:textSize="20sp"></TextView>
     </LinearLayout>
@@ -60,10 +63,15 @@
             android:textSize="20sp"
             android:paddingRight="39dp"
             />
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/revTag"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/revTag"
+                android:textSize="20sp"/>
+        </ScrollView>
 
     </LinearLayout>
 
@@ -76,7 +84,7 @@
             android:layout_height="wrap_content"
             android:text="@string/reviewnameadd"
             android:textSize="20sp"
-            android:paddingRight="21dp"
+            android:paddingRight="20dp"
             />
         <ScrollView
             android:layout_width="match_parent"
@@ -84,7 +92,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/revRev"/>
+                android:id="@+id/revRev"
+                android:textSize="20sp"/>
         </ScrollView>
     </LinearLayout>
     <RatingBar
