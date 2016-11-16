@@ -88,7 +88,6 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
                 mCategoryText = (TextView) view.findViewById(R.id.categoryText);
                 mCategoryText.setText(cate + " ");
                 mRatingNum = (TextView) view.findViewById(R.id.ratingNumber);
-                mRatingNum.setEnabled(false);
                 mRatingNum.setText(" " + String.valueOf(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_RATINGS))) + " / 10");
                 String imgurl = cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_PICTURE));
                 try{
