@@ -10,16 +10,14 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
@@ -27,11 +25,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
 public class EverythingListActivity extends AppCompatActivity implements SearchSettingFragment.SearchSettingListener{
 
     ListView mEverythingView;
+    RecyclerView mRecyclerView;
+    StaggeredGridLayoutManager mLayoutManager;
     Button mAlpha;
     Button mCata;
     Button mRata;
@@ -41,6 +39,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
     TextView mRatingNum;
     SQLHelper helper;
     CursorAdapter mCursorAdapter;
+    RecyclerViewAdapter mAdapter;
     String mSetting = "everything";
     int mStackLevel = 0;
     boolean aasc = true;
@@ -59,7 +58,8 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         setContentView(R.layout.activity_everything_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mEverythingView = (ListView) findViewById(R.id.list_view);
+//        mEverythingView = (ListView) findViewById(R.id.list_view);
+        mRecyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         mAlpha = (Button) findViewById(R.id.alphabetizor);
         mCata = (Button) findViewById(R.id.categorizor);
         mRata = (Button) findViewById(R.id.ratingzor);
@@ -73,56 +73,63 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         final Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getEverything();
         cursor.moveToFirst();
 
-        mCursorAdapter = new CursorAdapter(EverythingListActivity.this, cursor, 0) {
-            @Override
-            public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-                return LayoutInflater.from(context).inflate(R.layout.list_view, viewGroup ,false);
-            }
-
-            @Override
-            public void bindView(View view, Context context, Cursor cursor) {
-                mEverythingName = (TextView) view.findViewById(R.id.everythingName);
-                mEverythingName.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_EVERYTHING)));
-                String cate = helper.getCategory(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_CATEGORY_ID)));
-                mEverythingPic = (ImageView) findViewById(R.id.everythingPic);
-                mCategoryText = (TextView) view.findViewById(R.id.categoryText);
-                mCategoryText.setText(cate + " ");
-                mRatingNum = (TextView) view.findViewById(R.id.ratingNumber);
-                mRatingNum.setText(" " + String.valueOf(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_RATINGS))) + " / 10");
-                String imgurl = cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_PICTURE));
-                try{
-                    Picasso.with(context).load(imgurl).into(mEverythingPic);
-                }catch(IllegalArgumentException e){
-                    Log.d("Picasso", e.getMessage());
-                }
-            }
-        };
-
-        mEverythingView.setAdapter(mCursorAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new RecyclerViewAdapter(EverythingListActivity.this, cursor);
+        mRecyclerView.setAdapter(mAdapter);
 
 
-        mEverythingView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Bundle bundle = new Bundle();
-                bundle.putLong("rid", l);
-
-                ReviewFragment revfrag = new ReviewFragment();
-                revfrag.setArguments(bundle);
-                showReviewDialog(l);
-            }
-        });
-
-        mEverythingView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                helper.deleteOneEverything((int)l);
-                Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getEverything();
-                cursor.moveToFirst();
-                mCursorAdapter.changeCursor(cursor);
-                return true;
-            }
-        });
+//        mCursorAdapter = new CursorAdapter(EverythingListActivity.this, cursor, 0) {
+//            @Override
+//            public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+//                return LayoutInflater.from(context).inflate(R.layout.list_view, viewGroup ,false);
+//            }
+//
+//            @Override
+//            public void bindView(View view, Context context, Cursor cursor) {
+//                mEverythingName = (TextView) view.findViewById(R.id.everythingName);
+//                mEverythingName.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_EVERYTHING)));
+//                String cate = helper.getCategory(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_CATEGORY_ID)));
+//                mEverythingPic = (ImageView) findViewById(R.id.everythingPic);
+//                mCategoryText = (TextView) view.findViewById(R.id.categoryText);
+//                mCategoryText.setText(cate + " ");
+//                mRatingNum = (TextView) view.findViewById(R.id.ratingNumber);
+//                mRatingNum.setText(" " + String.valueOf(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_RATINGS))) + " / 10");
+//                String imgurl = cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_PICTURE));
+//                try{
+//                    Picasso.with(context).load(imgurl).into(mEverythingPic);
+//                }catch(IllegalArgumentException e){
+//                    Log.d("Picasso", e.getMessage());
+//                }
+//            }
+//        };
+//
+//        mEverythingView.setAdapter(mCursorAdapter);
+//
+//
+//        mEverythingView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Bundle bundle = new Bundle();
+//                bundle.putLong("rid", l);
+//
+//                ReviewFragment revfrag = new ReviewFragment();
+//                revfrag.setArguments(bundle);
+//                showReviewDialog(l);
+//            }
+//        });
+//
+//        mEverythingView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                helper.deleteOneEverything((int)l);
+//                Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getEverything();
+//                cursor.moveToFirst();
+//                mCursorAdapter.changeCursor(cursor);
+//                return true;
+//            }
+//        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
