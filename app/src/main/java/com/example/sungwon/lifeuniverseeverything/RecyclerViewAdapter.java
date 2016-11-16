@@ -80,9 +80,11 @@ public class RecyclerViewAdapter extends CursorRecyclerViewAdapter<RecyclerViewA
         }catch(IllegalArgumentException e){
             Log.d("Picasso", e.getMessage());
         }
+        setFadeAnimation(viewHolder.cardView);
+        setScaleAnimation(viewHolder.cardView);
+        setAnimation(viewHolder.cardView, lastPosition);
         final Integer position = cursor.getPosition();
         viewHolder.cardView.setTag(position);
-        //INTENT TO DETAIL VIEW
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,12 +92,13 @@ public class RecyclerViewAdapter extends CursorRecyclerViewAdapter<RecyclerViewA
                 Cursor cursor = getCursor();
                 int position = ((Integer) view.getTag()).intValue();
                 cursor.moveToPosition(position);
+                int id = cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable._ID));
                 Bundle bundle = new Bundle();
-                bundle.putLong("rid", position);
+                bundle.putLong("rid", id);
 
                 ReviewFragment revfrag = new ReviewFragment();
                 revfrag.setArguments(bundle);
-                showReviewDialog(position);
+                showReviewDialog(id);
 
 //                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 //
@@ -144,7 +147,7 @@ public class RecyclerViewAdapter extends CursorRecyclerViewAdapter<RecyclerViewA
         ft.addToBackStack(null);
 
         // Create and show the dialog.
-        DialogFragment newFragment = ReviewFragment.newInstance(l+1);
+        DialogFragment newFragment = ReviewFragment.newInstance(l);
         newFragment.show(ft, "review");
     }
 }

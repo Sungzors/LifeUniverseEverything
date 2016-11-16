@@ -78,6 +78,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
         if (old != null) {
             old.close();
         }
+
     }
 
     /**
