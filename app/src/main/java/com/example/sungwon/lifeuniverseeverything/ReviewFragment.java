@@ -5,12 +5,16 @@ import android.app.FragmentManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by SungWon on 9/9/2016.
@@ -32,6 +36,7 @@ public class ReviewFragment extends DialogFragment {
     TextView mRevCat;
     TextView mRevTag;
     TextView mRevRev;
+    ImageView mRevPic;
     RatingBar mRatingRev;
     SQLHelper mHelper;
     Button mBack;
@@ -53,6 +58,7 @@ public class ReviewFragment extends DialogFragment {
         mRevCat = (TextView)v.findViewById(R.id.revCat);
         mRevTag = (TextView)v.findViewById(R.id.revTag);
         mRevRev = (TextView)v.findViewById(R.id.revRev);
+        mRevPic = (ImageView)v.findViewById(R.id.revImage);
         mRatingRev = (RatingBar)v.findViewById(R.id.ratingRev);
         mHelper = new SQLHelper(getActivity());
         mBack = (Button)v.findViewById(R.id.backButton);
@@ -61,6 +67,11 @@ public class ReviewFragment extends DialogFragment {
         Cursor cursor = mHelper.getEverythingByID(ridi);
         cursor.moveToFirst();
 
+        try{
+            Picasso.with(getActivity().getBaseContext()).load(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_PICTURE))).into(mRevPic);
+        }catch(IllegalArgumentException e){
+            Log.d("Picasso", e.getMessage());
+        }
         mRevName.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_EVERYTHING)));
         mRevCat.setText(mHelper.getCategory(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_CATEGORY_ID))));
         mRevTag.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_TAGSTHING)));
