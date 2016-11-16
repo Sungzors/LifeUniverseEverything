@@ -64,7 +64,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
         mCata = (Button) findViewById(R.id.categorizor);
         mRata = (Button) findViewById(R.id.ratingzor);
 
-        mEverythingPic = (ImageView) findViewById(R.id.everythingPic);
+
 
         handleIntent(getIntent());
         helper = new SQLHelper(EverythingListActivity.this);
@@ -84,13 +84,15 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
                 mEverythingName = (TextView) view.findViewById(R.id.everythingName);
                 mEverythingName.setText(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_EVERYTHING)));
                 String cate = helper.getCategory(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_CATEGORY_ID)));
+                mEverythingPic = (ImageView) findViewById(R.id.everythingPic);
                 mCategoryText = (TextView) view.findViewById(R.id.categoryText);
                 mCategoryText.setText(cate + " ");
                 mRatingNum = (TextView) view.findViewById(R.id.ratingNumber);
                 mRatingNum.setEnabled(false);
                 mRatingNum.setText(" " + String.valueOf(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_RATINGS))) + " / 10");
+                String imgurl = cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_PICTURE));
                 try{
-                    Picasso.with(context).load(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_PICTURE))).centerCrop().into(mEverythingPic);
+                    Picasso.with(context).load(imgurl).into(mEverythingPic);
                 }catch(IllegalArgumentException e){
                     Log.d("Picasso", e.getMessage());
                 }
