@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class AddThingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -69,6 +71,7 @@ public class AddThingActivity extends AppCompatActivity implements AdapterView.O
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mPicURL = urlinput.getText().toString();
+                                Picasso.with(AddThingActivity.this).load(mPicURL).into(mLUEpic);
                             }
                         })
                         .setNegativeButton(R.string.negativebutton, new DialogInterface.OnClickListener() {

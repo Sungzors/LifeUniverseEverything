@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 public class EverythingListActivity extends AppCompatActivity implements SearchSettingFragment.SearchSettingListener{
 
@@ -85,7 +88,12 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
                 mCategoryText.setText(cate + " ");
                 mRatingNum = (TextView) view.findViewById(R.id.ratingNumber);
                 mRatingNum.setEnabled(false);
-                mRatingNum.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_RATINGS))) + " / 10");
+                mRatingNum.setText(" " + String.valueOf(cursor.getInt(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_RATINGS))) + " / 10");
+                try{
+                    Picasso.with(context).load(cursor.getString(cursor.getColumnIndex(SQLHelper.everythingTable.COLUMN_PICTURE))).centerCrop().into(mEverythingPic);
+                }catch(IllegalArgumentException e){
+                    Log.d("Picasso", e.getMessage());
+                }
             }
         };
 
