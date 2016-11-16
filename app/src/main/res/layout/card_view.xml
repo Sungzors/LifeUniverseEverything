@@ -38,23 +38,24 @@
                     android:id="@+id/everythingPic"/>
                 <TextView
                     android:layout_width="70dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:paddingTop="15dp"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
+                    android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:id="@+id/categoryText"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="70dp"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@android:color/black"
                     android:id="@+id/everythingName"
                     />
 
@@ -67,14 +68,14 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:layout_weight="1"
                         android:textColor="@android:color/black"
                         android:text="@string/rating"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:layout_weight="1"
                         android:textColor="@android:color/black"
                         android:id="@+id/ratingNumber"/>

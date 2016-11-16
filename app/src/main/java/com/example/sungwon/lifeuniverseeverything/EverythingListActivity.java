@@ -19,26 +19,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class EverythingListActivity extends AppCompatActivity implements SearchSettingFragment.SearchSettingListener{
 
-    ListView mEverythingView;
+//    ListView mEverythingView;
     RecyclerView mRecyclerView;
     StaggeredGridLayoutManager mLayoutManager;
     Button mAlpha;
     Button mCata;
     Button mRata;
-    TextView mEverythingName;
-    ImageView mEverythingPic;
-    TextView mCategoryText;
-    TextView mRatingNum;
+//    TextView mEverythingName;
+//    ImageView mEverythingPic;
+//    TextView mCategoryText;
+//    TextView mRatingNum;
     SQLHelper helper;
-    CursorAdapter mCursorAdapter;
+//    CursorAdapter mCursorAdapter;
     RecyclerViewAdapter mAdapter;
     String mSetting = "everything";
     int mStackLevel = 0;
@@ -146,7 +142,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
             public void onClick(View view) {
                 Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_EVERYTHING, aasc);
                 aasc = !aasc;
-                mCursorAdapter.changeCursor(cursor);
+                mAdapter.changeCursor(cursor);
             }
         });
         mCata.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +150,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
             public void onClick(View view) {
                 Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_CATEGORY_ID, casc);
                 casc = !casc;
-                mCursorAdapter.changeCursor(cursor);
+                mAdapter.changeCursor(cursor);
             }
         });
         mRata.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +158,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
             public void onClick(View view) {
                 Cursor cursor = helper.getEverythingSort(SQLHelper.everythingTable.COLUMN_RATINGS, rasc);
                 rasc = !rasc;
-                mCursorAdapter.changeCursor(cursor);
+                mAdapter.changeCursor(cursor);
             }
         });
     }
@@ -203,7 +199,7 @@ public class EverythingListActivity extends AppCompatActivity implements SearchS
             Cursor cursor = SQLHelper.getInstance(EverythingListActivity.this).getSpecificThing(query, mSetting);
 
 
-            mCursorAdapter.changeCursor(cursor);
+            mAdapter.changeCursor(cursor);
         }
     }
     public void showDialog() {

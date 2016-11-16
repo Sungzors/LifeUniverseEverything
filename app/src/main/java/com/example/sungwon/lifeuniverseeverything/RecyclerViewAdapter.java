@@ -1,17 +1,27 @@
 package com.example.sungwon.lifeuniverseeverything;
 
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.Random;
 
 /**
  * Created by SungWon on 11/15/2016.
@@ -70,5 +80,71 @@ public class RecyclerViewAdapter extends CursorRecyclerViewAdapter<RecyclerViewA
         }catch(IllegalArgumentException e){
             Log.d("Picasso", e.getMessage());
         }
+        final Integer position = cursor.getPosition();
+        viewHolder.cardView.setTag(position);
+        //INTENT TO DETAIL VIEW
+        viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Cursor cursor = getCursor();
+                int position = ((Integer) view.getTag()).intValue();
+                cursor.moveToPosition(position);
+                Bundle bundle = new Bundle();
+                bundle.putLong("rid", position);
+
+                ReviewFragment revfrag = new ReviewFragment();
+                revfrag.setArguments(bundle);
+                showReviewDialog(position);
+
+//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+//
+//                    View image2 = view.findViewById(R.id.imageView);
+//                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(((Activity) view.getContext()), image2, "imageViewTransition");
+//                    view.getContext().startActivity(intent, options.toBundle());
+//                }else{
+//                    view.getContext().startActivity(intent);
+//                }
+            }
+        });
+    }
+
+    private void setFadeAnimation(View view) {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
+    }
+    private void setScaleAnimation(View view) {
+        ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
+    }
+    private int lastPosition = -1;
+
+    private void setAnimation(View viewToAnimate, int position) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition) {
+            ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+            anim.setDuration(new Random().nextInt(501));//to make duration random number between [0,501)
+            viewToAnimate.startAnimation(anim);
+            lastPosition = position;
+        }
+    }
+    public void showReviewDialog(long l) {
+
+
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = ((Activity)context).getFragmentManager().beginTransaction();
+        Fragment prev = ((Activity)context).getFragmentManager().findFragmentByTag("review");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = ReviewFragment.newInstance(l+1);
+        newFragment.show(ft, "review");
     }
 }

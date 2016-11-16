@@ -359,7 +359,7 @@ public class SQLHelper extends SQLiteOpenHelper{
         Cursor cursor;
         if (asc) {
             cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
+                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
                     null, // c. selections
                     null, // d. selections args
                     null, // e. group by
@@ -369,7 +369,7 @@ public class SQLHelper extends SQLiteOpenHelper{
             asc = false;
         } else {
             cursor = db.query(everythingTable.TABLE_NAME, // a. table
-                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING}, // b. column names
+                    new String[]{everythingTable._ID, everythingTable.COLUMN_CATEGORY_ID, everythingTable.COLUMN_EVERYTHING, everythingTable.COLUMN_RATINGS, everythingTable.COLUMN_REVIEW, everythingTable.COLUMN_TAGSTHING, everythingTable.COLUMN_PICTURE}, // b. column names
                     null, // c. selections
                     null, // d. selections args
                     null, // e. group by
@@ -378,6 +378,7 @@ public class SQLHelper extends SQLiteOpenHelper{
                     null); // h. limit
             asc = true;
         }
+        cursor.moveToFirst();
         return cursor;
     }
 
