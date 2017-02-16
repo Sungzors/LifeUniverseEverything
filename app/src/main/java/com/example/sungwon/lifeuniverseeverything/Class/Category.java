@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything;
+package com.example.sungwon.lifeuniverseeverything.Class;
 
 /**
  * Created by SungWon on 9/6/2016.

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.sungwon.lifeuniverseeverything.EverythingListActivity"
+    tools:context="com.example.sungwon.lifeuniverseeverything.Activity.EverythingListActivity"
     tools:showIn="@layout/activity_everything_list"
     android:background="@color/cardview_dark_background">
     <ImageView

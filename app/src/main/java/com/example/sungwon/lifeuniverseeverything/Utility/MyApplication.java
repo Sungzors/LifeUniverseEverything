@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything;
+package com.example.sungwon.lifeuniverseeverything.Utility;
 
 import android.app.Application;
 

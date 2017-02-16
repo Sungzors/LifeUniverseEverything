@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.sungwon.lifeuniverseeverything.MainActivity">
+    tools:context="com.example.sungwon.lifeuniverseeverything.Activity.MainActivity">
     <ImageView
         android:layout_width="800dp"
         android:layout_height="1200dp"

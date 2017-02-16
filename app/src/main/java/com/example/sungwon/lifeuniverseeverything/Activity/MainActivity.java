@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything;
+package com.example.sungwon.lifeuniverseeverything.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.sungwon.lifeuniverseeverything.R;
+import com.example.sungwon.lifeuniverseeverything.Utility.SQLHelper;
 
 public class MainActivity extends AppCompatActivity {
     ImageView mLuedpic;

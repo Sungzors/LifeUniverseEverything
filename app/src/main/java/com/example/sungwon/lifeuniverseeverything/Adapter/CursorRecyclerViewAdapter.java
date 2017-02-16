@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything;
+package com.example.sungwon.lifeuniverseeverything.Adapter;
 
 import android.content.Context;
 import android.database.Cursor;

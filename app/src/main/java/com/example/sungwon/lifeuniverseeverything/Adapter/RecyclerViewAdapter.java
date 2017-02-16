@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything;
+package com.example.sungwon.lifeuniverseeverything.Adapter;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -19,6 +19,9 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sungwon.lifeuniverseeverything.R;
+import com.example.sungwon.lifeuniverseeverything.Fragment.ReviewFragment;
+import com.example.sungwon.lifeuniverseeverything.Utility.SQLHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.Random;

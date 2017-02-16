@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything;
+package com.example.sungwon.lifeuniverseeverything.Fragment;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.sungwon.lifeuniverseeverything.R;
+import com.example.sungwon.lifeuniverseeverything.Utility.SQLHelper;
 import com.squareup.picasso.Picasso;
 
 /**

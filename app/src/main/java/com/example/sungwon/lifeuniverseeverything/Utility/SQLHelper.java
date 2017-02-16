@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything;
+package com.example.sungwon.lifeuniverseeverything.Utility;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+
+import com.example.sungwon.lifeuniverseeverything.Class.Category;
+import com.example.sungwon.lifeuniverseeverything.Class.Everything;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

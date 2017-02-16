@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything;
+package com.example.sungwon.lifeuniverseeverything.Activity;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 
+import com.example.sungwon.lifeuniverseeverything.Class.Everything;
+import com.example.sungwon.lifeuniverseeverything.R;
+import com.example.sungwon.lifeuniverseeverything.Utility.SQLHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

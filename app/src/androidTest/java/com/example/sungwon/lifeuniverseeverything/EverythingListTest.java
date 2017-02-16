@@ -6,6 +6,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ApplicationTestCase;
 
+import com.example.sungwon.lifeuniverseeverything.Activity.EverythingListActivity;
+import com.example.sungwon.lifeuniverseeverything.Utility.SQLHelper;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
