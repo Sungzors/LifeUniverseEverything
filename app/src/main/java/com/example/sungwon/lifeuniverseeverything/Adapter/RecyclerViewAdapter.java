@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sungwon.lifeuniverseeverything.R;
-import com.example.sungwon.lifeuniverseeverything.Fragment.ReviewFragment;
+import com.example.sungwon.lifeuniverseeverything.Activity.Fragment.ReviewFragment;
 import com.example.sungwon.lifeuniverseeverything.Utility.SQLHelper;
 import com.squareup.picasso.Picasso;
 

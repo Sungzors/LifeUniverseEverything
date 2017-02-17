@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything.Fragment;
+package com.example.sungwon.lifeuniverseeverything.Activity.Fragment;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -23,7 +23,7 @@ import com.squareup.picasso.Picasso;
  */
 public class ReviewFragment extends DialogFragment {
 
-    static ReviewFragment newInstance(long num) {
+    public static ReviewFragment newInstance(long num) {
         ReviewFragment f = new ReviewFragment();
 
         // Supply num input as an argument.

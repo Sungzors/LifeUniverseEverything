@@ -23,9 +23,9 @@ import android.widget.Toast;
 
 import com.example.sungwon.lifeuniverseeverything.R;
 import com.example.sungwon.lifeuniverseeverything.Adapter.RecyclerViewAdapter;
-import com.example.sungwon.lifeuniverseeverything.Fragment.ReviewFragment;
+import com.example.sungwon.lifeuniverseeverything.Activity.Fragment.ReviewFragment;
 import com.example.sungwon.lifeuniverseeverything.Utility.SQLHelper;
-import com.example.sungwon.lifeuniverseeverything.Fragment.SearchSettingFragment;
+import com.example.sungwon.lifeuniverseeverything.Activity.Fragment.SearchSettingFragment;
 
 public class EverythingListActivity extends AppCompatActivity implements SearchSettingFragment.SearchSettingListener {
 

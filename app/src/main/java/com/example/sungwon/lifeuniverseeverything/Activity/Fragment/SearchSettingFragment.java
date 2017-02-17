@@ -1,4 +1,4 @@
-package com.example.sungwon.lifeuniverseeverything.Fragment;
+package com.example.sungwon.lifeuniverseeverything.Activity.Fragment;
 
 import android.app.DialogFragment;
 import android.content.Context;
@@ -27,7 +27,7 @@ public class SearchSettingFragment extends DialogFragment{
      * Create a new instance of MyDialogFragment, providing "num"
      * as an argument.
      */
-    static SearchSettingFragment newInstance(int num) {
+    public static SearchSettingFragment newInstance(int num) {
         SearchSettingFragment f = new SearchSettingFragment();
 
         // Supply num input as an argument.
