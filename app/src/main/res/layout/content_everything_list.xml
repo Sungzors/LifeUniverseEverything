@@ -24,7 +24,6 @@
         android:paddingRight="15dp"
         android:padding="10dp"
         android:id="@+id/llbutt"
-        android:layout_marginBottom="10dp"
         >
         <Button
             android:layout_width="0dp"
@@ -48,26 +47,15 @@
 
     </LinearLayout>
 
-    <!--<ListView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/list_view"-->
-        <!--android:layout_marginTop="80dp"-->
-        <!--android:cacheColorHint="@android:color/holo_red_dark"-->
-        <!--android:textFilterEnabled="false"-->
-        <!--android:backgroundTint="#ffffff"-->
-        <!--android:background="#ffffff">-->
-
-
-
-    <!--</ListView>-->
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerView"
         android:layout_below="@id/llbutt"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
         android:scrollbars="vertical"/>
 
 </RelativeLayout>
